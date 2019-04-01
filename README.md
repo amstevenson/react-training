@@ -322,6 +322,22 @@ Other functions to look into are:
 
 ## The Basics
 
+### Using a Build Workflow
+
+We will be using npm. Node package manager. To manage dependencies.
+
+We will be using Webpack to bundle up files together for when we come to deploy the mini projects.
+
+We will be using babel to translate old features to model (babel) and to compile next gen javascript.
+
+We will be using a development server to run code locally.
+
+### Setup / Creating a templated React App
+
+Follow steps outlined in: https://github.com/facebook/create-react-app
+
+This will allow for the creation of a facebook react template app to be made.
+
 ## Debugging
 
 ## Styling components
