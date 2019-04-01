@@ -567,7 +567,7 @@ Events can be added to objects. A classic example would be adding an `onClick` e
 
 Find a list of supported events here: https://reactjs.org/docs/events.html#supported-events
 
-**important**
+__important__
 
 When calling this.switchNameHandler, if () is added to the end, then it will be called straight away when the DOM is loaded. So definitely do not invoke it.   
 
