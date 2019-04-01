@@ -25,6 +25,10 @@ containing business logic.
 2) Var still works, but encourages to use let and const.
 3) Let = variable values that changes. Const = a constant value, a final.
 
+Read more about let : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let
+
+Read more about const : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const
+
 ### Arrow functions
 
 1) Different way of creating javascript functions.
@@ -47,6 +51,8 @@ const multiply = number => number * 2;
 
 2) Removes the issues surrounding the this keyword. Running this inside of an arrow function means
 that its always referring to the context of that specific function.
+
+Read more: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
 
 ### Exports and Imports (Modules)
 
@@ -279,6 +285,39 @@ output:
   name: "adam"
 }
 ```
+
+### Array functions
+
+Running a function on each element of an array using map:
+
+```
+const numbers = [1, 2, 3];
+
+// May differ, so check docs if this doesnt work
+const doubleNumArray = numbers.map(num => num * 2);
+
+console.log(numbers);
+console.log(doubleNumArray);
+
+output:
+[1, 2, 3]
+[2, 4, 6]
+```
+
+Other functions can be derived from looking at the documentation.
+
+The following page gives a good overview over the various methods you can use on the array prototype
+- feel free to click through them and refresh your knowledge as required:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+map()  => https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+find()  => https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+findIndex()  => https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+filter()  => https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+reduce()  => https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce?v=b
+concat()  => https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat?v=b
+slice()  => https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
+splice()  => https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
 
 ## The Basics
 
