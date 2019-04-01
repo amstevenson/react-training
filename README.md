@@ -518,7 +518,7 @@ const person = (props) => {
 };
 ```
 
-Which would show on the page the text between the opening closing elements for: 
+Which would show on the page the text between the opening and closing elements for: 
 
 `<Person name='Adam' age='29'> Some additional information. </Person>`
 
@@ -526,9 +526,9 @@ Which would show on the page the text between the opening closing elements for:
 
 State is managed from inside of a component and can only be used on a class that extends from Component. 
 
-React hooks can be used to manage state in functional components however. 
+React hooks can be used to manage state for functional components. 
 
-Using state with care is important, as it makes an app unpredictable if it is used everywhere. 
+Using state with care is important; an app can be unpredictable if state is used everywhere. 
 
 State is a javascript object. Can be declared using: 
 
@@ -567,7 +567,8 @@ Events can be added to objects. A classic example would be adding an `onClick` e
 
 Find a list of supported events here: https://reactjs.org/docs/events.html#supported-events
 
-!important
+important**
+
 When calling this.switchNameHandler, if () is added to the end, then it will be called straight away when the DOM is loaded. So definitely do not invoke it.   
 
 ## Debugging
