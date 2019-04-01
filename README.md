@@ -389,6 +389,89 @@ have a class called App that has all the component declarations within it.
 
 The render() method within App.js will render something to the screen.
 
+The default import in App.js defines what will be exported from that file by default...go figure.
+
+Its important to note that html within a javascript component is not actually html but jfx. Babel will transpile
+this into javascript and does the behind the scenes work for getting it displayed on the DOM.
+
+### Understanding JSX
+
+The html within the component is transpiled to javascript (which is preferred):
+
+```
+return (
+  <div className="App">
+    <h1>Hi, I am a React App</h1>
+  </div>
+);
+```
+
+and the above is a shortcut effectively for:
+
+```
+return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'hi i am a react App'))
+```
+
+### JSX restrictions
+
+For the example of:
+
+```
+return (
+  <div className="App">
+    <h1>Hi, I am a React App</h1>
+  </div>
+);
+```
+
+We are restricted to using javascript specific terminology with respect to keywords. So `class` cannot be used,
+hence why we have `className` instead. React is also converting div and h1 behind the scenes, so h1 and div
+are not treated like html at all within the javascript block.
+
+With the above example, another restriction is that only one element can be used. So another h1 element underneath the div would not work. A workaround is to return json, but it is best practice
+to return multiple components instead. 
+
+### Creating a functional component
+
+Its important to use the component framework at a later date when we come to the point of being able to control 'state'. Which is effectively the dynamic element for React. 
+
+Adding a new component:
+
+1) Add a new file, starting with an uppercase. For example, Person.js. Then add the component code: 
+
+```
+import React from 'react';
+
+const person = () => {
+    return <p>I am a Person!</p>
+}
+
+export default person;
+```
+
+2) Add it to the main root component, or the place where it will be displayed: 
+
+```
+import React, { Component } from 'react';
+import './App.css';
+import Person from './Person/Person'
+
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <h1>Hi, I am a React App</h1>
+        <Person />
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+The above shows that the new component is imported and then declared as <Person /> which renders it to the screen.
+
 ## Debugging
 
 ## Styling components
