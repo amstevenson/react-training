@@ -571,6 +571,72 @@ Find a list of supported events here: https://reactjs.org/docs/events.html#suppo
 
 When calling this.switchNameHandler, if () is added to the end, then it will be called straight away when the DOM is loaded. So definitely do not invoke it.   
 
+### Manipulating state
+
+The component object happens to have a setState method. It allows us to update the special state property and ensures that React updates the DOM. It takes an object as an argument and merges what is specified with the existing state. 
+
+```
+this.setState({
+  persons: [
+    { name: 'Super Adam', age: 29 },
+    { name: 'Herpa', age: 30 },
+    { name: 'Derpa', age: 31 }
+  ]
+})
+```
+
+Now when the button is clicked (assuming that the setState function is called on a buttons onClick event), the name will change from Adam to Super Adam. 
+
+There are only two things within React that allow us to update the DOM; changing state and manipulating props. React looks out for props. If either changes, the code is analysed and anything that is different is updated. 
+
+### Using state hook for State manipulation 
+
+Allows us to manage state in functional components. This was introduced in a recent installment of React (v16.8 or higher). 
+
+This relys on us not importing component, but useState instead. Then we can call useState within the function and set it up with some values:
+
+```
+  const [ personsState, setPersonsState ] = useState({
+    persons: [
+      { name: 'Adam', age: 29 },
+      { name: 'Herpa', age: 30 },
+      { name: 'Derpa', age: 31 }
+    ]
+  });
+```
+
+This will return two values, the first will be the state object. The second element will always be a function that allows us to update the state. So that React is aware of it and therefore will allow for the DOM to be updated. 
+
+SetState can then be used as follows: 
+
+```
+  const switchNameHandler = () => {
+    setPersonsState({
+      persons: [
+        { name: 'Super Adam', age: 29 },
+        { name: 'Herpa', age: 30 },
+        { name: 'Derpa', age: 31 }
+      ]
+    }) 
+  }
+```
+
+And the switchNameHandler function can be declared and used when needed to update the DOM. For example, when calling an onClick event for a button. 
+
+Also important to note is that the `this` keyword will no longer be valid if switching from a class to a functional way of creating a component, and in that sense will need to be removed. 
+
+When using hooks, using setState does not merge the existing state with the new state, but will infact replace it instead. So in this case you will need to manually ensure that all required information is there when the state is being changed. An easier approach to solving this problem is to use `useState` multiple times. 
+
+### Stateless vs Stateful components
+
+In terms of best practice, it is deemed better to have fewer components that manage state to avoid unpredictable behaviour and to make it easier to manage. 
+
+Smart and container components are named for components that manage state. Dumb or presentational containers are ones that do not manage state. 
+
+### Passing method references between components
+
+
+
 ## Debugging
 
 ## Styling components
