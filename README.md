@@ -332,11 +332,62 @@ We will be using babel to translate old features to model (babel) and to compile
 
 We will be using a development server to run code locally.
 
-### Setup / Creating a templated React App
+### Setup / Creating a template React App
 
 Follow steps outlined in: https://github.com/facebook/create-react-app
 
 This will allow for the creation of a facebook react template app to be made.
+
+Simple instructions:
+
+1) npm install create-react-app -g // install
+2) create-react-app react-complete-guide // create a new app. Creates a folder with all dependencies included.
+3) Navigate to newly created folder
+4) npm start // starts up npm and hosts on http://localhost:3000
+
+#### Understanding folder structure
+
+package.json lists all the dependencies and scripts for the project. The scripts can be run with:
+
+- npm run start
+- npm run build
+- npm run test
+- npm run eject
+
+After a change has been made, can use the build command to update the website.
+
+The node modules folder holds all the dependencies for the project. Has loads in there. Should not edit anything
+within here.
+
+public folder contains the root folder that contains the files that we should edit for the website.
+
+Index html is the single page we have upon installing the template. This would be where we could branch off and
+facilitate the creation of the entire website.
+
+manifest.json contains some metadata about the project.
+
+The src folder contains all the react specific javascript files, which is effectively the react application. It will
+contain all of the components that we will be altering/using. Index.js is the starting point and imports all other
+required components from other javascript files.
+
+When starting a new project from this, it's important to remove the component code in app.js to start afresh and
+then remove the logo.svg file, as we will not be using that either.
+
+Further to this, I can optionally remove all css content from app.css, and simply keep the .App class definition
+should I want to clean it up fully.
+
+### Component basics
+
+In terms of the test project created in the step before, the first render method in index.js specifies the App
+class which is imported from `./App`. Replacing that with any html would work, however using a component makes
+more sense.
+
+From a best practice point of view, `./App` should be the only declaration here within index.js. This is because
+it is defined as the root component. This is akin to a hierarchical structure wherein we have a main block component
+and subsequent components should be placed within it, rather than alongside it. So in this sense, `App.js` should
+have a class called App that has all the component declarations within it.
+
+The render() method within App.js will render something to the screen.
 
 ## Debugging
 
