@@ -144,6 +144,7 @@ myProperty = 'value'
 ```
 
 Methods:
+
 ES6
 ```
 myMethod(){}
@@ -156,7 +157,128 @@ myMethod = () => {}
 
 ### Spread and Rest Operators
 
+The operator is just three dots ...
 
+1) Spread:
+
+Used to split up array elements OR object properties.
+
+```
+const numbers = [1, 2, 3];
+const newNumbers = [...numbers, 4]; // adds four to array
+
+console.log(newNumbers);
+
+const person = {
+  name: 'Adam'
+};
+
+const newPerson = {
+  ...person,
+  age: 28
+}
+
+console.log(newPerson)
+
+Outputs:
+
+[1, 2, 3, 4]
+[object Object] {
+  age: 28,
+  name: "Adam"
+}
+
+```
+
+2) Rest:
+
+Used to merge a list of function arguments into an array
+
+```
+args may contain more than one argument.
+
+const filter = (...args) => args.filter(el => el === 1); // three '=' signs checks for type and equality
+
+console.log(filter(1, 2, 3))
+
+output:
+
+[1] (as the above is only returning values where it is equal to 1.)
+```
+
+### Destructuring
+
+Easily extract array elements or object properties and store them in variables.
+
+Different to spread or Rest in the sense this is only pulling out one single property.
+
+1. Array Destructuring
+
+```
+const numbers = [1, 2, 3];
+
+[num1, , num3] = numbers
+console.log(num1, num3)
+
+Output:
+1
+3
+```
+
+2. Object Destructuring
+
+Targets a specific property.
+
+```
+{name} = {name: 'Adam', age: 28}
+console.log(name) // Adam
+console.log(age) // undefined, unless we specify 'age' rather than name in the above
+```
+
+### References
+
+Arrays/objects are stored in memory, and subsequent parameter declarations that copy the value
+from that array/object results in a pointer being created.
+
+```
+const person = {
+  name: 'adam'
+};
+
+const secondPerson = person;
+
+person.name = 'derp'
+
+console.log(secondPerson);
+
+output:
+[object Object] {
+  name: "derp"
+}
+
+```
+
+To get around this, can make it so that the array/object is immutable, so a new copy is created
+rather than a reference.
+
+```
+const person = {
+  name: 'adam'
+};
+
+const secondPerson = {
+  ...person
+};
+
+person.name = 'derp'
+
+console.log(secondPerson);
+
+output:
+[object Object] {
+  name: "adam"
+}
+```
 
 ## The Basics
 
