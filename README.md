@@ -1,4 +1,4 @@
-# react-training
+# React Training
 
 ## Websites to run test code on
 
@@ -105,22 +105,17 @@ Pretty much the same as other languages, just with a different syntax.
 
 ```
 class Human {
-  constructor() {
-    this.gender = 'male'
-  }
+  gender = 'male';
 
-  printGender() {
+  printGender = () => {
     console.log(this.gender)
   }
 }
 
 class Person extends Human {
-  constructor() {
-    super()
-    this.name = 'Adam'
-  }
+  name = 'Adam';
 
-  printMyName() {
+  printMyName = () => {
     console.log(this.name)
   }
 }
@@ -131,6 +126,8 @@ person.printGender();
 ```
 
 2) Different syntax of setting properties and methods.
+
+Properties:
 
 Saves us the trouble of setting the constructor function call. However this only works in ES7.
 
@@ -145,6 +142,21 @@ ES7
 ```
 myProperty = 'value'
 ```
+
+Methods:
+ES6
+```
+myMethod(){}
+```
+
+ES7
+```
+myMethod = () => {}
+```
+
+### Spread and Rest Operators
+
+
 
 ## The Basics
 
