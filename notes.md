@@ -30,7 +30,8 @@ containing business logic.
 1) Different way of creating javascript functions.
 
 For example:
-'''
+
+```
 const myFnc = () => {
 }
 
@@ -42,7 +43,7 @@ const printMyName = name => {
 If running on one line, can do:
 const multiply = number => number * 2;
 
-'''
+```
 
 2) Removes the issues surrounding the this keyword. Running this inside of an arrow function means
 that its always referring to the context of that specific function.
@@ -55,26 +56,26 @@ that its always referring to the context of that specific function.
 
 Singular:
 
-'''
+```
 const person = {
     name: 'Max'
 }
 
 export default person
-'''
+```
 
 default means that its the default export of a file.
 
 Multiple:
 
-'''
+```
 export const clean = () => {}
 export const baseData = 10;
-'''
+```
 
 4) Importing:
 
-'''
+```
 import person from './person.js'
 import prs from './person.js' - a default export means we can call it whatever we wish.
 
@@ -85,7 +86,7 @@ or for one line:
 
 import { basedata, clean } from './utility.js'
 
-'''
+```
 
 
 
