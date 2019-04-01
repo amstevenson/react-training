@@ -470,7 +470,105 @@ class App extends Component {
 export default App;
 ```
 
-The above shows that the new component is imported and then declared as <Person /> which renders it to the screen.
+The above shows that the new component is imported and then declared as `<Person />` which renders it to the screen.
+
+### Components and JSX cheat sheet
+
+When creating components, I have the choice between two different ways:
+
+1) Functional components. `const cmp = () => { return <div>some text</div> }`
+2) Class based components `class cmp extends Component { render() {return <div>some text</div>}}`
+
+For the above, the first is recommended. 
+
+### Outputting dynamic components
+
+Running dynamic content on a javscript component can be as simple as having it call some javascript code at runtime. For example: 
+
+`return <p>I am a Person and I am { Math.floor(Math.random() * 30) } years old!</p>`
+
+One line expressions. These can then be updated on dynamic loads for the page through an event handler possibly. 
+
+### Working with props
+
+Props can be used as a parameter for a component and refers to the attributes for the components. Using that can allow for a component to refer to attributes that are passed to it. For example: 
+
+```
+const person = (props) => {
+    return <p>I am { props.name } and I am { props.age } years old!</p>
+}
+```
+
+Which can then be declared and rendered using:
+
+`<Person name='Adam' age='29' />`
+
+### Understanding the children property 
+
+React gives us access to a property that gives us access to elements between the opening and closing tags of a defined component. Could even be other React components. 
+
+```
+const person = (props) => {
+    return (
+        <div>
+            <p>I am { props.name } and I am { props.age } years old!</p>
+            <p>{ props.children }</p>
+        </div>
+    )
+};
+```
+
+Which would show on the page the text between the opening closing elements for: 
+
+`<Person name='Adam' age='29'> Some additional information. </Person>`
+
+### Understanding and using state
+
+State is managed from inside of a component and can only be used on a class that extends from Component. 
+
+React hooks can be used to manage state in functional components however. 
+
+Using state with care is important, as it makes an app unpredictable if it is used everywhere. 
+
+State is a javascript object. Can be declared using: 
+
+```
+class App extends Component {
+  state = {
+    persons: [
+      { name: 'Adam', age: 29 },
+      { name: 'Herpa', age: 30 },
+      { name: 'Derpa', age: 31 }
+    ]
+  }
+
+  ...other component based code
+```
+
+This can then be referred to within the component by using `this.state.persons[0].name` for example. 
+
+state is a property of the component class, you have to call it state - the name is not optional. You can then access it via `this.state` in your class JSX code (which you return in the required render()  method).
+
+Whenever state changes, the component will re-render and reflect the new state. The difference to props is that this happens within one and the same component - you don't receive new data (props ) from outside.
+
+It is important to note that the state would likely be populated in cases where dynamic content would be loaded in for an application. 
+
+### Handling events with methods
+
+Events can be added to objects. A classic example would be adding an `onClick` event to a button that results in a function being called. 
+
+```
+  switchNameHandler = () => {
+    console.log('Was clicked!');
+  }
+
+  <button onClick={this.switchNameHandler}>Switch Name</button>
+```
+
+Find a list of supported events here: https://reactjs.org/docs/events.html#supported-events
+
+!important
+When calling this.switchNameHandler, if () is added to the end, then it will be called straight away when the DOM is loaded. So definitely do not invoke it.   
 
 ## Debugging
 
