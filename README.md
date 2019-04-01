@@ -571,6 +571,12 @@ Find a list of supported events here: https://reactjs.org/docs/events.html#suppo
 
 When calling this.switchNameHandler, if () is added to the end, then it will be called straight away when the DOM is loaded. So definitely do not invoke it.   
 
+The exception to this rule is if it is assigned to a function. So 
+
+`<button onClick={ () => this.switchNameHandler('Super Adam 2') }>Switch Name</button>`
+
+Will not be called when the DOM loads as there is an arrow function `() =>` in place. 
+
 ### Manipulating state
 
 The component object happens to have a setState method. It allows us to update the special state property and ensures that React updates the DOM. It takes an object as an argument and merges what is specified with the existing state. 
@@ -635,7 +641,71 @@ Smart and container components are named for components that manage state. Dumb 
 
 ### Passing method references between components
 
+Updating the DOM when a presentational components content is clicked on, can be achieved by passing a reference to a handler that is set up within that container. This is apparently quite a common pattern that is followed. 
 
+```
+const person = (props) => {
+    return (
+        <div>
+            <p onClick={props.click}>I am { props.name } and I am { props.age } years old!</p>
+            <p>{ props.children }</p>
+        </div>
+    )
+};
+```
+
+Where it is being called from the smart container with: 
+
+```
+<Person
+  name={this.state.persons[1].name}
+  age={this.state.persons[1].age}
+  click={this.switchNameHandler.bind(this, 'Super herpa 2')}
+>
+```
+
+It is recommended to not use an arrow function in this case, but to use bind instead, as assigning a function to an onClick event can be inefficient. 
+
+### Adding two way binding
+
+In order to created the ability for a presentational component to use an event handler, it needs to be passed to it. 
+
+```
+nameChangedHandler = (event) => {
+  this.setState({
+    persons: [
+      { name: 'Adam', age: 29 },
+      { name: event.target.value, age: 30 },
+      { name: 'Derpa', age: 31 }
+    ]
+  });
+}
+
+...render code
+
+<Person
+  name={this.state.persons[1].name}
+  age={this.state.persons[1].age}
+  click={this.switchNameHandler.bind(this, 'Super herpa 2')}
+  changed={this.nameChangedHandler}
+>
+```
+
+Then this can be picked up and used. 
+
+```
+const person = (props) => {
+    return (
+        <div>
+            <p onClick={props.click}>I am { props.name } and I am { props.age } years old!</p>
+            <p>{ props.children }</p>
+            <input type="text" onChange={props.changed} value={props.name}/>
+        </div>
+    )
+};
+```
+
+In this sense, the binding between the two components is between the events target that updates the DOM which is on the state, and person that has an effect on that. 
 
 ## Debugging
 
