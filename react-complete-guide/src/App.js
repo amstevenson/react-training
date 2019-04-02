@@ -8,7 +8,8 @@ class App extends Component {
       { name: 'Adam', age: 29 },
       { name: 'Herpa', age: 30 },
       { name: 'Derpa', age: 31 }
-    ]
+    ],
+    showPersons: false
   };
 
   switchNameHandler = (newName) => {
@@ -31,6 +32,11 @@ class App extends Component {
     });
   }
 
+  togglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({showPersons: !doesShow});
+  }
+
   render() {
 
     const style = {
@@ -42,28 +48,28 @@ class App extends Component {
       cursor: 'pointer'
     };
 
+    let persons = null;
+
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+          {this.state.persons.map(person => {
+            return <Person 
+              name={person.name}
+              age={person.age}
+            />
+          })}
+        </div> 
+      );
+    }
+
     return (
       <div className="App">
         <h1>Hi, I am a React App</h1>
         <button 
           style={style}
-          onClick={ () => this.switchNameHandler('Super Adam 2') }>Switch Name</button>
-        <Person
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age}
-        />
-        <Person
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}
-          click={this.switchNameHandler.bind(this, 'Super herpa 2')}
-          changed={this.nameChangedHandler}
-        >
-          Some other information
-        </Person>
-        <Person
-          name={this.state.persons[2].name}
-          age={this.state.persons[2].age}
-        />
+          onClick={this.togglePersonsHandler}>Toggle People</button>
+          {persons}
       </div>
     );
   }

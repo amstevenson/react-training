@@ -707,6 +707,102 @@ const person = (props) => {
 
 In this sense, the binding between the two components is between the events target that updates the DOM which is on the state, and person that has an effect on that. 
 
+## Working with lists and conditionals 
+
+### Rendering content conditionally 
+
+Wrapping some content within a sec of curly braces gives the ability to write JavaScript within it. 
+
+```
+{<div>
+</div>}
+```
+
+For the purposes of conditionals, ternary expressions can be used. In the example below, the content is rendered if showPersons is true, else it does nothing. 
+
+```
+return ( 
+  { this.state.showPersons ? 
+    <div>
+      <Person
+        name={this.state.persons[0].name}
+        age={this.state.persons[0].age}
+      />
+    </div> : null
+  }
+);
+```
+
+The null at the end denotes what happens if the expression does not return true. 
+
+### Handling dynamic content "The JavaScript way"
+
+The above section shows an example of using a ternary expression in React. This is great, but can be confusing if we need nested statements. It can be hard to keep track of what expression is doing what. 
+
+The cleaner solution for this is to keep in mind that the render function is called everytime the DOM is updated. So the logic surrounding what content is returned could be done before the return statement. Changing the example above this would look like: 
+
+```
+    let persons = null;
+
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+          <Person
+            name={this.state.persons[0].name}
+            age={this.state.persons[0].age}
+          />
+        </div> 
+      );
+    }
+
+    return (
+      <div className="App">
+        <h1>Hi, I am a React App</h1>
+        <button 
+          style={style}
+          onClick={this.togglePersonsHandler}>Toggle People</button>
+          {persons}
+      </div>
+    );
+```
+
+Which is the more preferred way of doing it, as it makes it look cleaner and is easier to manage. Be aware that there is also a toggle that switches the state of this.state.showPersons between true and false each time a button is clicked. 
+
+### Outputting lists 
+
+A conversion between a JavaScript array and JSX may be needed before React can work with it. It can be declared as: 
+
+```
+    persons: [
+      { name: 'Adam', age: 29 },
+      { name: 'Herpa', age: 30 },
+      { name: 'Derpa', age: 31 }
+    ]
+```
+
+In JavaScript. The above example would need to be converted before being used inside of a React Component, the map function can allow us to do this. 
+
+```
+...Component code
+
+// Show contents of array
+{this.state.persons.map(person => {
+  return <Person 
+    name={person.name}
+    age={person.age}
+  />
+})}
+
+```
+
+Map takes the element array index as an input. Using an arrow function means that it is called for each element in the array. By specifying `return`, it will attempt to return everything for that index, in our case we will be returning a Person object for each Person found in the array. 
+
+Be wary that using the above will introduce a warning about how a key was not assigned, which should be addressed. 
+
+### Lists and State 
+
+
+
 ## Debugging
 
 ## Styling components
