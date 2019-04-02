@@ -936,7 +936,7 @@ This will inject some functionality that will parse the styles we use so that su
 
 To use within an inline style, it needs to start with a colon, and be wrapped within a string; as they are not valid JavaScript names, but as strings they are:
 
-`
+```
   const style = {
     backgroundColor: 'green',
     color: 'white',
@@ -952,7 +952,7 @@ To use within an inline style, it needs to start with a colon, and be wrapped wi
   };
 
   <button style={style}>Hover button</button>
-`
+```
 
 ### Using Radium for media related css
 
