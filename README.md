@@ -908,9 +908,101 @@ To change the name, the follow code assumes that there is a set state for a comp
 
 Pretty much the same as you presume it would be. Use logic to determine what classes are used for elements. If declaring an array of classes, using the `.join(' ')` method is required.  
 
+Otherwise, use stylesheets and declare classes, id's etc, as I would for any other web based application/site. 
+
+React can work with Radium for inline based CSS changes, that is, where CSS is defined and used in a React component.
+
 ### Adding and using Radium
 
+The problem with combining CSS and React natively inline is that sudo selectors (`button:hover` for example) are not compatiable, since React transpiles what is inside the render function. 
 
+Can get around this by using distinct css class names to allow it to be inscope. 
+
+A third party application is required  however to allow for inline css to be used for sudo selectors: `Radium`. 
+
+To install it: 
+
+- npm install --save radium 
+
+Then to use it, import the dependency:
+
+`import Radium from 'radium';`
+
+and wrap the Radium component around the App component that is returned by default: 
+
+`export default Radium(App);`
+
+This will inject some functionality that will parse the styles we use so that sudo selectors work as we expect. 
+
+To use within an inline style, it needs to start with a colon, and be wrapped within a string; as they are not valid JavaScript names, but as strings they are:
+
+`
+  const style = {
+    backgroundColor: 'green',
+    color: 'white',
+    font: 'inherit',
+    border: '1px solid blue',
+    padding: '8px',
+    marginBottom: '10px',
+    cursor: 'pointer',
+    ':hover': {
+      backgroundColor: 'blue',
+      color: 'white'
+    }
+  };
+
+  <button style={style}>Hover button</button>
+`
+
+### Using Radium for media related css
+
+Media queries can be used inline when Radium is used: 
+
+```
+const person = (props) => {
+
+    const style = {
+        '@media (min-width: 500px)': {
+            width: '450px'
+        }
+    };
+
+    return (
+        <div className="Person" style={style}>
+            <p onClick={props.click}>I am { props.name } and I am { props.age } years old!</p>
+            <p>{ props.children }</p>
+            <input type="text" onChange={props.changed} value={props.name}/>
+        </div>
+    )
+};
+```
+
+However, this will not work unless the rendered element is wrapped inside of a StyleRoot element:
+
+```
+  return (
+    <StyleRoot>
+    <div className="App">
+      <h1>Hi, I am a React App</h1>
+      <p className={classes.join(' ')}>Woo, an application made with React</p>
+      <button 
+        style={style}
+        onClick={this.togglePersonsHandler}>Toggle People</button>
+        {persons}
+    </div>
+    </StyleRoot>
+  );
+```
+
+The `{persons}` output defines a list of elements derived from the component that uses the media css that Radium and StyleRoot work together to facilitate. 
+
+### Using CSS stylesheets
+
+Follow the steps outlined in: 
+
+`https://facebook.github.io/create-react-app/docs/adding-a-css-modules-stylesheet`
+
+To allow for different css sheets to be used, where certain class names may be the same, but where  the values could differ from one another.
 
 ## Debugging
 
