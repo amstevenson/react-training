@@ -902,6 +902,16 @@ To change the name, the follow code assumes that there is a set state for a comp
   }
 ```
 
+## Styling React Components
+
+### General CSS
+
+Pretty much the same as you presume it would be. Use logic to determine what classes are used for elements. If declaring an array of classes, using the `.join(' ')` method is required.  
+
+### Adding and using Radium
+
+
+
 ## Debugging
 
 ## Styling components
