@@ -1134,9 +1134,79 @@ Read more:
 
 - https://reactjs.org/docs/error-boundaries.html
 
-## Styling components
-
 ## Components Deep Drive
+
+### A Better Project Structure
+
+The questions for determining a project structure are:
+
+- What should go into its own component?
+- What do you group together in a higher up component (i.e the root)?
+
+The answer lies within determining how much code within a component can be split out into others; if we have a component that returns one element, changes are it has been split down enough.
+
+Typically however, Components that manage state, or higher up ones like the App component, should not be returning UI rendering logic too much. It should be lean and not contain too much JSX. 
+
+### Setting an App into Components
+
+Important to note here is that containers should be used to manage and set the state. So they should only contain code that relates to handlers, events, setting state. Other required logic should be in components. So when creating a list of 
+
+A structure for this would be:
+
+```
+  App.js (container - sets state, sets properties for called components, defines events/handlers) calls:
+
+    persons.js (component - returns a list of people (props sent from App.js))
+    cockpit.js (component - returns html content for the rest of the page(props send from App.js))
+
+```
+
+### Comparing Stateful and Stateless components
+
+Stateful components are components that manage state. Where `setState` is used or where hooks are used. 
+
+Presentational components were called functional components in the past because they used to be unable to manage state before hooks were introduced. If a component can possibly not manage state, it should not, since it is best to restrict yourself to a couple of components that are responsible for state management. 
+
+The majority of components should be presentational/stateless; ones that don't manage state. This is because splitting the app into containers and presentational components makes it manageable. Where the stateful containers very likely call components, so it creates a hierarchical structure and is easier to manage as a result.   
+
+### Class based vs Functional Components
+
+What should be used?
+
+Class based components are ones that extend the Component object. They have access to State and can use lifecycle hooks. Access to state and props is via the `this` keyword. 
+
+Functional objects are ones that have props that return JFX code. Since React 16, they also have access to State (useState()), however lifecycle hooks are not supported at the moment. Functional components have props as an argument.
+
+In terms of what to use in projects, it really depends. Some argue however that having a split is good. That is to say that classes can be used where the State is updated, or lifecyle hooks are used, and functional components used in presentational contexts. 
+
+- Use classes if you need to manage State or access to Lifecycle Hooks, and you don't want to use React Hooks. 
+- Use functional components in all other cases
+
+However, it is still very possible to use functional components in all cases at present, except for when lifecycle hooks need to be used. 
+
+### Component Lifecycle
+
+Only available in Class based components at the time of writing. However there is a functional component equivalent. It is important to note that Lifecycle Hooks have nothing to do with React hooks. 
+
+There are certain functions that can be used within the context of the lifecycle: 
+
+- constructor()
+- getDerivedStateFromProps()
+- getSnapshotBeforeUpdate()
+- componentDidCatch()
+- componentWillUnmount()
+- shouldComponentUpdate()
+- componentDidUpdate()
+- componentDidMount()
+- render()
+
+#### Lifecycle: Component Creation
+
+During the components creation, the constructor is called. When calling this, the `super(props)` method needs to be called. This is good for setting an initial state, but not great if you introduce side effects, such as sending HTTP requests, as it can impact performance and perhaps result in multiple re-render cycles. 
+
+Next getDerviedStateFromProps(props, state) is called. Which will rarely be used. This can be used when props need to change for the class based components, the state can then be synced to them. An example of using this would be where props of a component will be changing, which will have an effect on the state of a component. Like above, this isn't the place to send HTTP requests. 
+
+Next render(). Prepare and structure your JSX code around this. Will be used rather often. If using this method, others will be called, including `componentDidMount` which will be the place where side effects should be used; such as making a HTTP request to get new data from the web. However, for `componentDidMount` is not the place to set the state of the class based component, as it will cause another re-render cycle to occur.
 
 ## HTTP Requests
 
