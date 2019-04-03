@@ -1136,6 +1136,10 @@ Read more:
 
 - https://reactjs.org/docs/error-boundaries.html
 
+### Other ways to debug using developer tools
+
+Near the bottom of developer tools will be two tabs by default (Console and What's New). Clicking on the burger icon to the left of it will bring up more menu's. By clicking on Rendering, and then ticking on `Paint flashing` you can pinpoint areas of the screen that are being rendered on the real DOM. Which may be helpful when trying to diagnose how often particular parts of the page are being rendered. 
+
 ## Components Deep Dive
 
 ### A Better Project Structure
