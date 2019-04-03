@@ -17,6 +17,8 @@ containing business logic.
 - Single: widgets in a hierarchical structure, only one ReactDOM.render call.
 - multiple: only segments are widgets, multiple ReactDOM.render calls.
 
+3) When hooks are used, the virtual DOM will check to see if the real DOM needs to be updated or not before proceeding to do so. It does this by checking if the State has changed, or if any props have changed (more on this in later sections below). 
+
 ## Next-Gen Javascript
 
 ### Let and Const
@@ -1134,7 +1136,7 @@ Read more:
 
 - https://reactjs.org/docs/error-boundaries.html
 
-## Components Deep Drive
+## Components Deep Dive
 
 ### A Better Project Structure
 
@@ -1149,9 +1151,9 @@ Typically however, Components that manage state, or higher up ones like the App 
 
 ### Setting an App into Components
 
-Important to note here is that containers should be used to manage and set the state. So they should only contain code that relates to handlers, events, setting state. Other required logic should be in components. So when creating a list of 
+Important to note here is that containers should be used to manage and set the state. So they should only contain code that relates to handlers, events, setting state. Other required logic should be in components.
 
-A structure for this would be:
+An example structure for this would be:
 
 ```
   App.js (container - sets state, sets properties for called components, defines events/handlers) calls:
@@ -1175,7 +1177,13 @@ What should be used?
 
 Class based components are ones that extend the Component object. They have access to State and can use lifecycle hooks. Access to state and props is via the `this` keyword. 
 
-Functional objects are ones that have props that return JFX code. Since React 16, they also have access to State (useState()), however lifecycle hooks are not supported at the moment. Functional components have props as an argument.
+Functional objects are ones that have props that return JFX code. Since React 16, they also have access to State (useState()). Functional components have props as an argument. 
+
+See: 
+
+- https://itnext.io/add-state-and-lifecycle-methods-to-function-components-with-react-hooks-8e2bdc44d43d
+
+For how to implement life cycle hooks in functional components. 
 
 In terms of what to use in projects, it really depends. Some argue however that having a split is good. That is to say that classes can be used where the State is updated, or lifecyle hooks are used, and functional components used in presentational contexts. 
 
@@ -1184,11 +1192,11 @@ In terms of what to use in projects, it really depends. Some argue however that 
 
 However, it is still very possible to use functional components in all cases at present, except for when lifecycle hooks need to be used. 
 
-### Component Lifecycle
+### Component Lifecycle (for class based components)
 
-Only available in Class based components at the time of writing. However there is a functional component equivalent. It is important to note that Lifecycle Hooks have nothing to do with React hooks. 
+It is important to note that Lifecycle Hooks have nothing to do with React hooks. 
 
-There are certain functions that can be used within the context of the lifecycle: 
+There are certain functions that can be used within the context of the lifecycle for class components: 
 
 - constructor()
 - getDerivedStateFromProps()
@@ -1204,9 +1212,106 @@ There are certain functions that can be used within the context of the lifecycle
 
 During the components creation, the constructor is called. When calling this, the `super(props)` method needs to be called. This is good for setting an initial state, but not great if you introduce side effects, such as sending HTTP requests, as it can impact performance and perhaps result in multiple re-render cycles. 
 
+```
+  constructor(props) {
+    super(props)
+    console.log('[APP.js] constructor')
+    // set initial state if we have one
+  }
+```
+
 Next getDerviedStateFromProps(props, state) is called. Which will rarely be used. This can be used when props need to change for the class based components, the state can then be synced to them. An example of using this would be where props of a component will be changing, which will have an effect on the state of a component. Like above, this isn't the place to send HTTP requests. 
 
+```
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerivedStateFromProps', props)
+    return state // and an update to it beforehand if needed
+  }
+```
+
 Next render(). Prepare and structure your JSX code around this. Will be used rather often. If using this method, others will be called, including `componentDidMount` which will be the place where side effects should be used; such as making a HTTP request to get new data from the web. However, for `componentDidMount` is not the place to set the state of the class based component, as it will cause another re-render cycle to occur.
+
+```
+ componentDidMount() {
+    console.log('[App.js] componentDidMount')
+
+    // HTTP Requests...etc (called after the render function)
+  }
+```
+
+#### Lifecycle: Component Update
+
+When a component updates the life cycle order is as follows:
+
+`getDerivedStateFromProps(props, state)`
+
+To get or update state based on outside changes. This is rarely used, there are better practice ways to update state. 
+
+`shouldComponentUpdate(nextProps, nextState)`
+
+Allows us to cancel the updating process. Can decide if React should continue to re-render components. Used mostly for performance optimisation. Should be used carefully as a result and can be powerful in the sense that it can prevent unncessary update cycles. Needs to return True or False. True if React can continue, else False.
+
+`render()`
+
+Afterwards, render is called to update the DOM. Prepare and structure JSX code for this. 
+
+`Update Child Component Props`
+
+Functions are called from the React library that upates the child components when the render() function is called. For example, if a child component of App is People, each person will be updated when the render() function for App.js is called. 
+
+`getSnapshotBeforeUpdate(prevProps, prevState)`
+
+This lifecycle hook takes the prev prop and prev state and returns the snapshot that can be configured. Used for last minute DOM operations. For example, getting the current scrolling position from the user. 
+
+`componentDidUpdate`
+
+A lifecycle hook that signals that the update is now done. This is the place to call HTTP requests. Be careful to not cause an infinite hook that repeats the above cycle over and over again. This would happen if the request is called synchronously. HTTP requests in this context need to be performed asynchronously. 
+
+### Component Lifecycle (for functional components) 
+
+#### Using useEffect() in functional components
+
+UseEffect is the second most important react hook we can use next to useState. useEffect combines the functionality for the use cases we can cover for all class based life cycle hooks in one React hook. 
+
+A React hook is a function we can add into a functional component. 
+
+```
+    useEffect(() => {
+        console.log('[Cockpit.js] useEffect');
+
+        // HTTP Request...
+    });
+```
+
+The logic defined within the useEffect block will be used for every render cycle. This is run when the component is created and/or updated. This combines the effect of `componentDidMount` and `componentDidUpdate` in one effect. 
+
+`getDerivedStateFromProps` is not included in this. However, this can be remedied by referring to the `useState()` function, where props can be passed into it. 
+
+#### Controlling the useEffect() behaviour 
+
+Assuming we want to only want to use useEffect() on component creation. If used like the above section, it will be used on create and update. To have it only trigger when an object updates, a second parameter can be added: 
+
+```
+    useEffect(() => {
+        console.log('[Cockpit.js] useEffect');
+        setTimeout(() => {
+          alert('Saved data to the cloud!')
+        }, 1000);
+    }, [props.persons]);
+```
+
+In the above, an alert will only be shown when the props.persons array is updated. Based on this, it is perfectly reasonable to have multiple `useEffect()` calls that observe different dependencies. Other dependencies can be added too.
+
+If we want to use useEffect() only once, an empty array can be used instead:
+
+```
+    useEffect(() => {
+        console.log('[Cockpit.js] useEffect');
+        setTimeout(() => {
+          alert('Saved data to the cloud!')
+        }, 1000);
+    }, []);
+```
 
 ## HTTP Requests
 
