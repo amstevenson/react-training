@@ -1000,11 +1000,139 @@ The `{persons}` output defines a list of elements derived from the component tha
 
 Follow the steps outlined in: 
 
-`https://facebook.github.io/create-react-app/docs/adding-a-css-modules-stylesheet`
+- https://facebook.github.io/create-react-app/docs/adding-a-css-modules-stylesheet
 
 To allow for different css sheets to be used, where certain class names may be the same, but where  the values could differ from one another.
 
+CSS Modules are a relatively new concept (you can dive super-deep into them here: https://github.com/css-modules/css-modules). With CSS modules, you can write normal CSS code and make sure, that it only applies to a given component.
+
+It's not using magic for that, instead it'll simply automatically generate unique CSS class names for you. And by importing a JS object and assigning classes from there, you use these dynamically generated, unique names. So the imported JS object simply exposes some properties which hold the generated CSS class names as values.
+
+Example:
+
+In the post.module.css file
+
+```
+.Post {
+    color: red;
+}
+```
+
+In Post Component File
+
+`import styles from './post.module.css';`
+ 
+const post = () => (
+    <div className={styles.Post}>...</div>
+);
+
+Here, styles.Post  refers to an automatically generated Post  property on the imported styles  object. That property will in the end simply hold a value like Post__Post__ah5_1 .
+
+So your .Post  class was automatically transformed to a different class (Post__Post__ah5_1 ) which is unique across the application. You also can't use it accidentally in other components because you don't know the generated string! You can only access it through the styles object. And if you import the CSS file (in the same way) in another component, the styles  object there will hold a Post  property which yields a different (!) CSS class name. Hence it's scoped to a given component.
+
+By the way, if you somehow also want to define a global (i.e. un-transformed) CSS class in such a .css  file, you can prefix the selector with :global .
+
+Example:
+
+`:global .Post { ... } `
+
+Now you can use className="Post"  anywhere in your app and receive that styling.
+
 ## Debugging
+
+### Understanding error messages
+
+When an error is introduced into the code, a stack trace is likely shown which will help debug what the problem is. Also, inspecting and going to the console tab will give a stack trace. 
+
+In this case, the first step is to find the stack trace line that indicates what line the code is breaking on. 
+
+### Finding logical Errors using Dev tools and Sourcemap 
+
+In the sources tab on developer tools, you can navigate through the file explorer on the left hand side to the JavaScript file that has the component in. 
+
+After logically determining what line(s) could be interferring with the functionality in question, break points can be added by clicking on the numbered lines. 
+
+The web site will pause when the logic is being invoked, and the data will show in the developer tools that may help to debug the error. 
+
+In some cases this can be hard to find because there can be two folders generated that have the same JavaScript file within them. In this case I found that the folder containing the right JavaScript file to breakpoint within was the one named `static/js`.
+
+Read more about Devtool Debugging: 
+
+- https://developers.google.com/web/tools/chrome-devtools/javascript/
+
+#### React Developer Tools
+
+In addition to using Dev tools and breakpoints, an extension can be added to chrome to help debug even further. This is called `React Developer Tools`. 
+
+This adds another menu to developer tools that inspects all React components and gives information about object data, state and props. 
+
+### Showing an error to the user
+
+Exceptions being thrown in specific parts of code can help debug potential problems as they arise. Especially in large applications. These can be declared in a React component rather easilly: 
+
+```
+const person = (props) => {
+
+    const rnd = Math.random();
+
+    if ( rnd > 0.7 ) {
+        throw new Error('something went wrong')
+    }
+
+    ...other code
+```
+
+The nice thing about this too, is that it will not appear in a production build. However, if a development build is hosted on a live server/box, it does mean that the user will see the stack trace, which may not be ideal. So in this case an ErrorBoundary component would be more preferable. 
+
+With React 16, error boundaries can be created. React 16 introduces a new method called `componentDidCatch` that takes an error and info as arguments. This then means that whenever the component configured with that method throws an error, the logic within the function is called:
+
+```
+import React, { Component } from 'react';
+
+class ErrorBoundary extends Component {
+
+    state = {
+        hasError: false,
+        errorMessage: ''
+    }
+
+    componentDidCatch = (error, info) => {
+        this.setState({
+            hasError: true, errorMessage: error
+        });
+    }
+
+    render() {
+        if (this.state.hasError){
+            return <h1>{this.state.errorMessage}</h1>;
+        } else {
+            return this.props.children; // Children are whatever we wrap inside of error boundary
+        }
+    }
+}
+
+export default ErrorBoundary;
+```
+
+An ErrorBoundary component is known as a wrapper component, the goal being that it wraps around another element to handle any errors that are thrown within those elements. In the example below, if the Person component throws an error, the ErrorBoundary component's `componentDidCatch` function will be called:
+
+```
+return <ErrorBoundary>
+    <Person 
+      click={() => this.deletePersonHandler(index)}
+      name={person.name}
+      age={person.age}
+      key={person.id}
+      changed={(event) => this.nameChangedHandler(event, person.id)}/>
+  </ErrorBoundary>
+```
+Only use ErrorBoundaries in cases where we expect there to be behaviour that needs to be handled in a certain way. If not, there is no real reason to wrap everything around an ErrorBoundary. 
+
+It is also worth mentioning that these will only be shown in a production build, and in a developer build the stack trace will still be shown rather than the error message within the ErrorBoundary. 
+
+Read more:  
+
+- https://reactjs.org/docs/error-boundaries.html
 
 ## Styling components
 
