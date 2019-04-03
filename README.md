@@ -1267,6 +1267,36 @@ This lifecycle hook takes the prev prop and prev state and returns the snapshot 
 
 A lifecycle hook that signals that the update is now done. This is the place to call HTTP requests. Be careful to not cause an infinite hook that repeats the above cycle over and over again. This would happen if the request is called synchronously. HTTP requests in this context need to be performed asynchronously. 
 
+#### Other Class Based Lifecycle functions
+
+`componentWillUnmount` is called when a component is removed from the DOM: 
+
+```
+    componentWillUnmount() {
+        console.log('[Persons.js] componentWillUnmount');
+    }
+```
+
+This is typically used in scenarios where cleaning up is required. 
+
+#### Using shouldComponentUpdate() for optimisation
+
+To determine if a component should be updated, we can check the nextProps parameter and compare it: 
+
+```
+   shouldComponentUpdate(nextProps, nextState) {
+        console.log('[Persons.js] shouldComponentUpdate');
+        if (nextProps.persons !== this.props.persons) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+```
+
+If we have a list of people, and they change, we return true to indicate that it needs updating, otherwise we return false. This will only work if the two arrays that are being compared have different addresses in memory. 
+
 ### Component Lifecycle (for functional components) 
 
 #### Using useEffect() in functional components
@@ -1312,6 +1342,22 @@ If we want to use useEffect() only once, an empty array can be used instead:
         }, 1000);
     }, []);
 ```
+
+To use useEffect() for cleanup work (i.e a function that run before the main useEffect function runs, but after the (first) render cycle), a function can be returned from it: 
+
+```
+    useEffect(() => {
+        console.log('[Cockpit.js] useEffect');
+        setTimeout(() => {
+          alert('Saved data to the cloud!')
+        }, 1000);
+        return () => {
+          console.log('cleanup work in useEffect');
+        };
+    }, [props.persons]);
+```
+
+The `console.log('cleanup work in useEffect');` will only be called once, if the component it belongs to is not being removed. 
 
 ## HTTP Requests
 
