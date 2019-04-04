@@ -5,6 +5,7 @@
 Things to keep in mind:
 
 - Media CSS
+- Accessibility
 
 Layout:
 
@@ -31,4 +32,16 @@ Layout:
                     - A wrapper component taking {props.children}. May write messages, alerts, summaries etc
 ```
 
-Identifying state of the application: 
+Identifying state of the application; we will need to manage or keep track of: 
+
+```
+- Burger Builder Page (stateful)
+    - Ingredients
+        - meats, cheeses etc
+    - purchased
+        - true or false
+    - totalPrice
+        - number
+```
+
+The state should be controlled by the page itself, not the layout. 
