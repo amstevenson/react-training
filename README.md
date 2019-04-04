@@ -1301,6 +1301,8 @@ To determine if a component should be updated, we can check the nextProps parame
 
 If we have a list of people, and they change, we return true to indicate that it needs updating, otherwise we return false. This will only work if the two arrays that are being compared have different addresses in memory. 
 
+There is an easier way of doing this however if checking if any props of a component have changed (in the above case, that would be `if (nextProps.persons !== this.props.persons) {`). In this case, it is recommended that the class in question extends from a `PureComponent` rather than a `Component`. PureComponent is a normal component that already implements `shouldComponentUpdate` that checks if any prop has changed. 
+
 ### Component Lifecycle (for functional components) 
 
 #### Using useEffect() in functional components
@@ -1362,6 +1364,263 @@ To use useEffect() for cleanup work (i.e a function that run before the main use
 ```
 
 The `console.log('cleanup work in useEffect');` will only be called once, if the component it belongs to is not being removed. 
+
+### Optimising Functional Components With React memo()
+
+Using memo() is a React technique where defaut exports are wrapped with `memo(component)` function call. React will memorise (store) a snapshot of the component. And will only update it if the inputs change. 
+
+It is good practice to wrap functional components this way when working with components that do not change all of the time. A final example of how to use it is:
+
+`export default React.memo(cockpit);`
+
+Based on this though, there may be an assumption that wrapping each functional component in this way is a good idea, however, it is not. They should only be used when there is a parent/child structure where the parent updates the child, but if nothing actually needs to update, then you are adding unnecesary checks by adding `memo` to each component. 
+
+### How React updates the DOM
+
+`render()` does not actually update the DOM. It suggests what the update for the DOM should be. It actually does it by comparing the old virtual DOM, to the re-rendered virtual DOM. The old virtual DOM is faster than the real one. 
+
+A Virtual DOM is essentially a JavaScript representation of the script; React basically has two copies of the DOM, the old one and the one that will be re-rendered. It compares the old virtual DOM to the new one, and checks if there are any differences. If there are changes, then it reaches out and updates it. However, it only updates it in the places where differences were detected. If no differences are found, then it leaves it alone. 
+
+### Rendering Adjacent JSX elements
+
+This concerns how up to this point, we were only able to return JSX that was wrapped up in one single element, with as many children as we would want. 
+
+There is a way around this. We can return an array of JSX elements, however, a key is needed for this. In the examples above, the `Persons` component is an example of this. 
+
+Changing the `Persons` render function to return an array would look like: 
+
+```
+    render() {
+        console.log('[Person.js] rendering...')
+        return [
+                <p key="i1" onClick={this.props.click}>I am { this.props.name } and I am { this.props.age } years old!</p>,
+                <p key="i2">{ this.props.children }</p>,
+                <input key="i3" type="text" onChange={this.props.changed} value={this.props.name}/>
+        ];
+    }
+```
+
+The `key` can be whatever we want. As long as it is unique to each element that is returned. 
+
+The actual recommended approach however is to add an element there that fulfils Reacts requirement. In this sense, an auxillary component should be created, that effectively returns the children (the other html elements in this case): 
+
+```
+const aux = props => props.children; 
+
+export default aux;
+```
+
+When used in this example, it will fulfil Reacts requirement of having one element returned, and means that we do not have to worry about assigning keys: 
+
+```
+import React, { Component } from 'react';
+import styles from './person.module.css'
+import Aux from '../../../hoc/Auxillary'
+
+class Person extends Component {
+
+  render() {
+      console.log('[Person.js] rendering...')
+      return  (
+          <Aux>
+              <p onClick={this.props.click}>I am { this.props.name } and I am { this.props.age } years old!</p>
+              <p>{ this.props.children }</p>
+              <input type="text" onChange={this.props.changed} value={this.props.name}/>
+          </Aux>
+      )
+  }
+}
+
+export default Person;
+```
+
+Since React 16.2, there is a build in version of this called `React.Fragment`. So this makes it even simpler. In this case, we can simply do:
+
+```
+  return  (
+      <React.Fragment>
+          <p onClick={this.props.click}>I am { this.props.name } and I am { this.props.age } years old!</p>
+          <p>{ this.props.children }</p>
+          <input type="text" onChange={this.props.changed} value={this.props.name}/>
+      </React.Fragment>
+  )
+```
+
+### Higher Order Components 
+
+Higher order components should be named as `With<filename>.js`.
+
+These effectively allow us to set up html elements with specific classNames, and return the children. The premise is to use this to wrap around components where we want to add something in particular. Such as styling for classes, or even logic around HTTPRequests to handle errors. 
+
+An example declaration is (WithClass.js):
+
+```
+import React from 'react';
+
+const withClass = props => (
+    <div className={props.classes}>
+        {props.children}
+    </div>
+);
+
+export default withClass;
+```
+
+Which can be used to wrap some HTML elements in a render function: 
+
+```
+  return (
+    <WithClass classes={styles.App}>
+        <button onClick={() => { 
+            this.setState({showCockpit: false });
+        }}>Remove Cockpit</button>
+
+        { this.state.showCockpit ? (  
+          <Cockpit 
+            title={this.props.appTitle}
+            showPersons={this.state.showPersons}
+            personsLength={this.state.persons.length}
+            clicked={this.togglePersonsHandler}/> ) : null 
+        }
+
+        {persons}
+    </WithClass>
+  );
+```
+
+Where `styles.App` is a CSS class. 
+
+### Setting State Correctly
+
+When using Class based components, make sure to not use it incorrectly by having a `setState` function that uses both a new state and an old state.
+
+The reason for why this is bad is because `setState` does not automatically update the DOM; it only does so when there are resources available to allow for that to happen. This means that by the time it does update, the current state could be different to what the `setState` was expecting it to be, and as a result unpredictable behaviour may occur.
+
+An example of doing it wrong: 
+
+```
+  this.setState( {
+    persons: persons, 
+    changeCounter: this.state.changeCounter + 1 <<<
+  } );
+```
+
+An arrow function can be used however in the `setState` function to refer to two properties (`prevState` and `props`). So in the scenario where we do need to refer to the previous state, we can use the `prevState` attribute to allow for this. 
+
+```
+  this.setState((prevState, props) => {
+    return {
+      persons: persons, 
+      changeCounter: prevState.changeCounter + 1
+    }
+  });
+```
+
+### Using Prop types
+
+This is important when working in teams for declaring what types variables are. It removes the uncertainty around what types are being thrown around. For example, if someone passes in a string number when a child function does a calculation on it, it will fail. 
+
+`prop-types` is useful for this. 
+
+To use it: 
+
+- npm install --save prop-types 
+
+Import at the top of a JavaScript file: 
+
+- import PropTypes from 'prop-types';
+
+Then use it in the code underneath the class or functional component: 
+
+```
+class Person extends Component {
+
+    render() {
+      ...click, name, age, children, changed props are used
+    }
+}
+
+Person.PropTypes = {
+    click: PropTypes.func,
+    name: PropTypes.string,
+    age: PropTypes.number,
+    children: PropTypes.children,
+    changed: PropTypes.func
+};
+```
+
+The `Component.PropType` declarations effect is that any props that are passed to the component will be checked, and warnings will be sent in the event that there is a mismatch. 
+
+### Using Refs (classes) for elements
+
+These are useful when selecting an element for a component. For example, when setting the focus on the page to be the last element returns from a list. 
+
+To achieve this, the `ref` keywork can be added to any element. It is a keywork that is understood by React. It can be used in multiple ways: 
+
+Passing a function:
+
+```
+    componentDidMount() {
+        // executes after render
+        this.inputElement.focus();
+    }
+
+    ...code
+
+    <input 
+      type="text" 
+      ref={(inputEl) => {this.inputElement = inputEl}}
+      onChange={this.props.changed} 
+      value={this.props.name}/>
+```
+
+Another way is to use a constructor:
+
+```
+  constructor(props) {
+      super(props);
+      this.inputElementRef = React.createRef();
+  }
+
+  componentDidMount() {
+    // executes after render
+    this.inputElementRef.current.focus();
+  }
+
+  ...code
+
+  <input 
+    type="text" 
+    ref={this.inputElementRef}
+    onChange={this.props.changed} 
+    value={this.props.name}/>
+```
+
+### Using Refs (functional) for elements
+
+To achieve the above in functional components we can do: 
+
+```
+import React, { useEffect, UseRef } from 'react';
+
+const cockpit = props => {
+
+    const toggleBtnRef = useRef(null);
+
+    useEffect(() => {
+        toggleBtnRef.current.click();
+
+    }, []);
+
+    ...code
+
+    <button 
+      ref={toggleBtnRef}
+      className={btnClass}
+      onClick={props.clicked}>Toggle People</button>
+```
+
+Important to note for the above is that the usage of `toggleBtnRef` has to happen after the rendering has occurred. This is because the value of toggleBtnRef is null until the ref section of the <button> element is utilised. Of course, putting it in `useEffect()` means that it will be used after rendering has occurred. 
 
 ## HTTP Requests
 

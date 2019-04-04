@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Person from './Person/Person';
+import Person from './Person/Person'
 
 class Persons extends Component {
 
@@ -14,7 +14,9 @@ class Persons extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         console.log('[Persons.js] shouldComponentUpdate');
-        if (nextProps.persons !== this.props.persons) {
+        if (nextProps.persons !== this.props.persons || 
+            nextProps.changed !== this.props.changed || 
+            nextProps.clicked !== this.props.clicked) {
             return true;
         }
         else {
