@@ -1,6 +1,6 @@
-## Components Deep Dive
+# Components Deep Dive
 
-### A Better Project Structure
+## A Better Project Structure
 
 The questions for determining a project structure are:
 
@@ -11,7 +11,7 @@ The answer lies within determining how much code within a component can be split
 
 Typically however, Components that manage state, or higher up ones like the App component, should not be returning UI rendering logic too much. It should be lean and not contain too much JSX. 
 
-### Setting an App into Components
+## Setting an App into Components
 
 Important to note here is that containers should be used to manage and set the state. So they should only contain code that relates to handlers, events, setting state. Other required logic should be in components.
 
@@ -25,7 +25,7 @@ An example structure for this would be:
 
 ```
 
-### Comparing Stateful and Stateless components
+## Comparing Stateful and Stateless components
 
 Stateful components are components that manage state. Where `setState` is used or where hooks are used. 
 
@@ -33,7 +33,7 @@ Presentational components were called functional components in the past because 
 
 The majority of components should be presentational/stateless; ones that don't manage state. This is because splitting the app into containers and presentational components makes it manageable. Where the stateful containers very likely call components, so it creates a hierarchical structure and is easier to manage as a result.   
 
-### Class based vs Functional Components
+## Class based vs Functional Components
 
 What should be used?
 
@@ -54,7 +54,7 @@ In terms of what to use in projects, it really depends. Some argue however that 
 
 However, it is still very possible to use functional components in all cases at present, except for when lifecycle hooks need to be used. 
 
-### Component Lifecycle (for class based components)
+## Component Lifecycle (for class based components)
 
 It is important to note that Lifecycle Hooks have nothing to do with React hooks. 
 
@@ -70,7 +70,7 @@ There are certain functions that can be used within the context of the lifecycle
 - componentDidMount()
 - render()
 
-#### Lifecycle: Component Creation
+### Lifecycle: Component Creation
 
 During the components creation, the constructor is called. When calling this, the `super(props)` method needs to be called. This is good for setting an initial state, but not great if you introduce side effects, such as sending HTTP requests, as it can impact performance and perhaps result in multiple re-render cycles. 
 
@@ -101,7 +101,7 @@ Next render(). Prepare and structure your JSX code around this. Will be used rat
   }
 ```
 
-#### Lifecycle: Component Update
+### Lifecycle: Component Update
 
 When a component updates the life cycle order is as follows:
 
@@ -133,7 +133,7 @@ More on State and Lifecycle:
 
 - https://reactjs.org/docs/state-and-lifecycle.html
 
-#### Other Class Based Lifecycle functions
+### Other Class Based Lifecycle functions
 
 `componentWillUnmount` is called when a component is removed from the DOM: 
 
@@ -145,7 +145,7 @@ More on State and Lifecycle:
 
 This is typically used in scenarios where cleaning up is required. 
 
-#### Using shouldComponentUpdate() for optimisation
+### Using shouldComponentUpdate() for optimisation
 
 To determine if a component should be updated, we can check the nextProps parameter and compare it: 
 
@@ -165,9 +165,9 @@ If we have a list of people, and they change, we return true to indicate that it
 
 There is an easier way of doing this however if checking if any props of a component have changed (in the above case, that would be `if (nextProps.persons !== this.props.persons) {`). In this case, it is recommended that the class in question extends from a `PureComponent` rather than a `Component`. PureComponent is a normal component that already implements `shouldComponentUpdate` that checks if any prop has changed. 
 
-### Component Lifecycle (for functional components) 
+## Component Lifecycle (for functional components) 
 
-#### Using useEffect() in functional components
+### Using useEffect() in functional components
 
 UseEffect is the second most important react hook we can use next to useState. useEffect combines the functionality for the use cases we can cover for all class based life cycle hooks in one React hook. 
 
@@ -189,7 +189,7 @@ More on useEffect():
 
 - https://reactjs.org/docs/hooks-effect.html
 
-#### Controlling the useEffect() behaviour 
+### Controlling the useEffect() behaviour 
 
 Assuming we want to only want to use useEffect() on component creation. If used like the above section, it will be used on create and update. To have it only trigger when an object updates, a second parameter can be added: 
 
@@ -231,7 +231,7 @@ To use useEffect() for cleanup work (i.e a function that run before the main use
 
 The `console.log('cleanup work in useEffect');` will only be called once, if the component it belongs to is not being removed. 
 
-### Optimising Functional Components With React memo()
+## Optimising Functional Components With React memo()
 
 Using memo() is a React technique where defaut exports are wrapped with `memo(component)` function call. React will memorise (store) a snapshot of the component. And will only update it if the inputs change. 
 
@@ -241,13 +241,13 @@ It is good practice to wrap functional components this way when working with com
 
 Based on this though, there may be an assumption that wrapping each functional component in this way is a good idea, however, it is not. They should only be used when there is a parent/child structure where the parent updates the child, but if nothing actually needs to update, then you are adding unnecesary checks by adding `memo` to each component. 
 
-### How React updates the DOM
+## How React updates the DOM
 
 `render()` does not actually update the DOM. It suggests what the update for the DOM should be. It actually does it by comparing the old virtual DOM, to the re-rendered virtual DOM. The old virtual DOM is faster than the real one. 
 
 A Virtual DOM is essentially a JavaScript representation of the script; React basically has two copies of the DOM, the old one and the one that will be re-rendered. It compares the old virtual DOM to the new one, and checks if there are any differences. If there are changes, then it reaches out and updates it. However, it only updates it in the places where differences were detected. If no differences are found, then it leaves it alone. 
 
-### Rendering Adjacent JSX elements
+## Rendering Adjacent JSX elements
 
 This concerns how up to this point, we were only able to return JSX that was wrapped up in one single element, with as many children as we would want. 
 
@@ -312,7 +312,7 @@ Since React 16.2, there is a build in version of this called `React.Fragment`. S
   )
 ```
 
-### Higher Order Components 
+## Higher Order Components 
 
 Higher order components should be named as `With<filename>.js`.
 
@@ -360,7 +360,7 @@ More on Higher Order Components:
 
 - https://reactjs.org/docs/higher-order-components.html
 
-### Setting State Correctly
+## Setting State Correctly
 
 When using Class based components, make sure to not use it incorrectly by having a `setState` function that uses both a new state and an old state.
 
@@ -386,7 +386,7 @@ An arrow function can be used however in the `setState` function to refer to two
   });
 ```
 
-### Using Prop types
+## Using Prop types
 
 This is important when working in teams for declaring what types variables are. It removes the uncertainty around what types are being thrown around. For example, if someone passes in a string number when a child function does a calculation on it, it will fail. 
 
@@ -425,7 +425,7 @@ More on PropTypes:
 
 - https://reactjs.org/docs/typechecking-with-proptypes.html
 
-### Using Refs (classes) for elements
+## Using Refs (classes) for elements
 
 These are useful when selecting an element for a component. For example, when setting the focus on the page to be the last element returns from a list. 
 
@@ -470,7 +470,7 @@ Another way is to use a constructor:
     value={this.props.name}/>
 ```
 
-### Using Refs (functional) for elements
+## Using Refs (functional) for elements
 
 To achieve the above in functional components we can do: 
 
@@ -500,7 +500,7 @@ More information on Refs:
 
 - https://reactjs.org/docs/refs-and-the-dom.html
 
-### Understanding Prop Chain Problems - Using Context API
+## Understanding Prop Chain Problems - Using Context API
 
 Having nested components means that variables at the lowest end need to have the values passed through the chain. This means that there can be an element in redundancy, in the sense that multiple components could simply be forwarding prop attributes on. 
 
@@ -562,11 +562,11 @@ Where the `context` object is a reference to the context container's values.
 
 However, it is recommended to use `contextType` for doing all of this, which is explained in the next section. 
 
-### contextType & useContext()
+## contextType & useContext()
 
 A more efficient way of using the context container declared in the previous section
 
-#### Class based components
+### Class based components
 
 React 16.6 added another way of using the context container. There is a special static property called `contextType`. We can set the value of this to be our context container and React will pick it up and use it:
 
@@ -596,7 +596,7 @@ We can then refer to the values within the context by:
     { this.context.authenticated ? <p>Authenticated!</p> : <p>Please log in </p> }
 
 ```
-#### Functional components
+### Functional components
 
 It is rather simple to access the context in functional components. Simply declare `useContext` in the import, set a const for the actual context object, and then use the values within the code:
 

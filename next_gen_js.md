@@ -1,6 +1,6 @@
-## Next-Gen Javascript
+# Next-Gen Javascript
 
-### Let and Const
+## Let and Const
 
 1) ES6. Different ways of creating a variable to var.
 2) Var still works, but encourages to use let and const.
@@ -10,7 +10,7 @@ Read more about let : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Re
 
 Read more about const : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const
 
-### Arrow functions
+## Arrow functions
 
 1) Different way of creating javascript functions.
 
@@ -35,7 +35,7 @@ that its always referring to the context of that specific function.
 
 Read more: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
 
-### Exports and Imports (Modules)
+## Exports and Imports (Modules)
 
 1) Writing modular code spread up over files. Which are then imported on the html files.
 2) For example, one for a header and a footer.
@@ -86,7 +86,7 @@ bundled.person etc.
 These are advanced importing features which require additional requirements, so browsers will need to be
 set up to use them.
 
-### Classes, Properties and Methods
+## Classes, Properties and Methods
 
 Pretty much the same as other languages, just with a different syntax.
 
@@ -142,7 +142,7 @@ ES7
 myMethod = () => {}
 ```
 
-### Spread and Rest Operators
+## Spread and Rest Operators
 
 The operator is just three dots ...
 
@@ -193,7 +193,7 @@ output:
 [1] (as the above is only returning values where it is equal to 1.)
 ```
 
-### Destructuring
+## Destructuring
 
 Easily extract array elements or object properties and store them in variables.
 
@@ -222,7 +222,7 @@ console.log(name) // Adam
 console.log(age) // undefined, unless we specify 'age' rather than name in the above
 ```
 
-### References
+## References
 
 Arrays/objects are stored in memory, and subsequent parameter declarations that copy the value
 from that array/object results in a pointer being created.
@@ -267,7 +267,7 @@ output:
 }
 ```
 
-### Array functions
+## Array functions
 
 Running a function on each element of an array using map:
 

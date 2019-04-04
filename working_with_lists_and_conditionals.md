@@ -1,6 +1,6 @@
-## Working with lists and conditionals 
+# Working with lists and conditionals 
 
-### Rendering content conditionally 
+## Rendering content conditionally 
 
 Wrapping some content within a sec of curly braces gives the ability to write JavaScript within it. 
 
@@ -26,7 +26,7 @@ return (
 
 The null at the end denotes what happens if the expression does not return true. 
 
-### Handling dynamic content "The JavaScript way"
+## Handling dynamic content "The JavaScript way"
 
 The above section shows an example of using a ternary expression in React. This is great, but can be confusing if we need nested statements. It can be hard to keep track of what expression is doing what. 
 
@@ -59,7 +59,7 @@ The cleaner solution for this is to keep in mind that the render function is cal
 
 Which is the more preferred way of doing it, as it makes it look cleaner and is easier to manage. Be aware that there is also a toggle that switches the state of this.state.showPersons between true and false each time a button is clicked. 
 
-### Outputting lists 
+## Outputting lists 
 
 A conversion between a JavaScript array and JSX may be needed before React can work with it. It can be declared as: 
 
@@ -119,7 +119,7 @@ Which is useful for when you need to pass an identifer through to another functi
 
 This could be improved even further by using flexible lists to clean up how the data is presented above.
 
-### Updating State Immutability 
+## Updating State Immutability 
 
 When updating a variable and setting the state, make sure to use the slice method to copy the values from the object, rather than altering the references variable. 
 
@@ -143,7 +143,7 @@ And instead do:
   }
 ```
 
-### Flexible Lists
+## Flexible Lists
 
 If we need to update a specific rows value for a given list of People, we can set up a function that can be used to update content dynamically. 
 

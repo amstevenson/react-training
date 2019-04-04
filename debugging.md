@@ -1,12 +1,12 @@
-## Debugging
+# Debugging
 
-### Understanding error messages
+## Understanding error messages
 
 When an error is introduced into the code, a stack trace is likely shown which will help debug what the problem is. Also, inspecting and going to the console tab will give a stack trace. 
 
 In this case, the first step is to find the stack trace line that indicates what line the code is breaking on. 
 
-### Finding logical Errors using Dev tools and Sourcemap 
+## Finding logical Errors using Dev tools and Sourcemap 
 
 In the sources tab on developer tools, you can navigate through the file explorer on the left hand side to the JavaScript file that has the component in. 
 
@@ -20,13 +20,13 @@ Read more about Devtool Debugging:
 
 - https://developers.google.com/web/tools/chrome-devtools/javascript/
 
-#### React Developer Tools
+### React Developer Tools
 
 In addition to using Dev tools and breakpoints, an extension can be added to chrome to help debug even further. This is called `React Developer Tools`. 
 
 This adds another menu to developer tools that inspects all React components and gives information about object data, state and props. 
 
-### Showing an error to the user
+## Showing an error to the user
 
 Exceptions being thrown in specific parts of code can help debug potential problems as they arise. Especially in large applications. These can be declared in a React component rather easilly: 
 
@@ -94,6 +94,6 @@ Read more:
 
 - https://reactjs.org/docs/error-boundaries.html
 
-### Other ways to debug using developer tools
+## Other ways to debug using developer tools
 
 Near the bottom of developer tools will be two tabs by default (Console and What's New). Clicking on the burger icon to the left of it will bring up more menu's. By clicking on Rendering, and then ticking on `Paint flashing` you can pinpoint areas of the screen that are being rendered on the real DOM. Which may be helpful when trying to diagnose how often particular parts of the page are being rendered. 

@@ -1,6 +1,6 @@
-## Building the burger app
+# Building the burger app
 
-### Layout/Design
+## Layout/Design
 
 Things to keep in mind:
 

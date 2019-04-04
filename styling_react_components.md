@@ -1,6 +1,6 @@
-## Styling React Components
+# Styling React Components
 
-### General CSS
+## General CSS
 
 Pretty much the same as you presume it would be. Use logic to determine what classes are used for elements. If declaring an array of classes, using the `.join(' ')` method is required.  
 
@@ -8,7 +8,7 @@ Otherwise, use stylesheets and declare classes, id's etc, as I would for any oth
 
 React can work with Radium for inline based CSS changes, that is, where CSS is defined and used in a React component.
 
-### Adding and using Radium
+## Adding and using Radium
 
 The problem with combining CSS and React natively inline is that sudo selectors (`button:hover` for example) are not compatiable, since React transpiles what is inside the render function. 
 
@@ -50,7 +50,7 @@ To use within an inline style, it needs to start with a colon, and be wrapped wi
   <button style={style}>Hover button</button>
 ```
 
-### Using Radium for media related css
+## Using Radium for media related css
 
 Media queries can be used inline when Radium is used: 
 
@@ -92,7 +92,7 @@ However, this will not work unless the rendered element is wrapped inside of a S
 
 The `{persons}` output defines a list of elements derived from the component that uses the media css that Radium and StyleRoot work together to facilitate. 
 
-### Using CSS stylesheets
+## Using CSS stylesheets
 
 Follow the steps outlined in: 
 
