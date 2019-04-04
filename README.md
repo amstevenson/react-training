@@ -19,6 +19,10 @@ containing business logic.
 
 3) When hooks are used, the virtual DOM will check to see if the real DOM needs to be updated or not before proceeding to do so. It does this by checking if the State has changed, or if any props have changed (more on this in later sections below). 
 
+## List of Modules
+
+[Next-Gen JavaScript](./next_gen_js.md)
+
 ## Next-Gen Javascript
 
 ### Let and Const
