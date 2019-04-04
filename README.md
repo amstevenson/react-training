@@ -1271,6 +1271,10 @@ This lifecycle hook takes the prev prop and prev state and returns the snapshot 
 
 A lifecycle hook that signals that the update is now done. This is the place to call HTTP requests. Be careful to not cause an infinite hook that repeats the above cycle over and over again. This would happen if the request is called synchronously. HTTP requests in this context need to be performed asynchronously. 
 
+More on State and Lifecycle:
+
+- https://reactjs.org/docs/state-and-lifecycle.html
+
 #### Other Class Based Lifecycle functions
 
 `componentWillUnmount` is called when a component is removed from the DOM: 
@@ -1322,6 +1326,10 @@ A React hook is a function we can add into a functional component.
 The logic defined within the useEffect block will be used for every render cycle. This is run when the component is created and/or updated. This combines the effect of `componentDidMount` and `componentDidUpdate` in one effect. 
 
 `getDerivedStateFromProps` is not included in this. However, this can be remedied by referring to the `useState()` function, where props can be passed into it. 
+
+More on useEffect(): 
+
+- https://reactjs.org/docs/hooks-effect.html
 
 #### Controlling the useEffect() behaviour 
 
@@ -1490,6 +1498,10 @@ Which can be used to wrap some HTML elements in a render function:
 
 Where `styles.App` is a CSS class. 
 
+More on Higher Order Components: 
+
+- https://reactjs.org/docs/higher-order-components.html
+
 ### Setting State Correctly
 
 When using Class based components, make sure to not use it incorrectly by having a `setState` function that uses both a new state and an old state.
@@ -1550,6 +1562,10 @@ Person.PropTypes = {
 ```
 
 The `Component.PropType` declarations effect is that any props that are passed to the component will be checked, and warnings will be sent in the event that there is a mismatch. 
+
+More on PropTypes:
+
+- https://reactjs.org/docs/typechecking-with-proptypes.html
 
 ### Using Refs (classes) for elements
 
@@ -1621,6 +1637,136 @@ const cockpit = props => {
 ```
 
 Important to note for the above is that the usage of `toggleBtnRef` has to happen after the rendering has occurred. This is because the value of toggleBtnRef is null until the ref section of the <button> element is utilised. Of course, putting it in `useEffect()` means that it will be used after rendering has occurred. 
+
+More information on Refs:
+
+- https://reactjs.org/docs/refs-and-the-dom.html
+
+### Understanding Prop Chain Problems - Using Context API
+
+Having nested components means that variables at the lowest end need to have the values passed through the chain. This means that there can be an element in redundancy, in the sense that multiple components could simply be forwarding prop attributes on. 
+
+To illustrate the problem:
+
+```
+- main component (the states derp attribute is set)
+- component 2 (state is sent from main to component 2, derp is NOT used - redundant) 
+- component 3 (state is sent from component 2, to component 3, derp IS used)
+```
+
+In order to address this, `context` can be used, which was introduced by React. This effectively allows for global variables to be set, the values for which are set in a context component:
+
+```
+import React from 'react';
+
+// Globally available context object
+const authContext = React.createContext({
+    authenticated: false, 
+    login: () => {}
+});
+
+export default authContext;
+```
+
+This context container can then be wrapped around the starting component in a chain (i.e the main component), where you set it as the provider. This means that any child components can use the values within the context component by referring to the values set by the provider: 
+
+```
+  <AuthContext.Provider value={{
+      authenticated: this.state.authenticated, 
+      login: this.loginHandler
+  }}>
+    { this.state.showCockpit ? (  
+      <Cockpit 
+        title={this.props.appTitle}
+        showPersons={this.state.showPersons}
+        personsLength={this.state.persons.length}
+        clicked={this.togglePersonsHandler}
+        login={this.loginHandler}/>
+        ) : null 
+    }
+    {persons}
+  </AuthContext.Provider>
+```
+
+Default values in the context container declaration will be used when we dont set any provider values in the element definition. In the above example, we set new values. It is important to note that changing the values in the context will not cause a re-render cycle.
+
+To use the global context values: 
+
+```
+  <AuthContext.Consumer>
+      {context => 
+          context.authenticated ? <p>Authenticated!</p> : <p>Please log in </p>
+      }
+  </AuthContext.Consumer>
+```
+
+Where the `context` object is a reference to the context container's values. 
+
+However, it is recommended to use `contextType` for doing all of this, which is explained in the next section. 
+
+### contextType & useContext()
+
+A more efficient way of using the context container declared in the previous section
+
+#### Class based components
+
+React 16.6 added another way of using the context container. There is a special static property called `contextType`. We can set the value of this to be our context container and React will pick it up and use it:
+
+```
+class Person extends Component {
+
+    constructor(props) {
+        super(props);
+        this.inputElementRef = React.createRef();
+    }
+
+    static contextType = AuthContext;
+```
+
+We can then refer to the values within the context by:
+
+```
+    ...previous code
+
+    componentDidMount() {
+        this.inputElementRef.current.focus();
+        console.log(this.context.authenticated); <<<
+    }
+
+    or 
+
+    { this.context.authenticated ? <p>Authenticated!</p> : <p>Please log in </p> }
+
+```
+#### Functional components
+
+It is rather simple to access the context in functional components. Simply declare `useContext` in the import, set a const for the actual context object, and then use the values within the code:
+
+```
+import React, { useEffect, useRef, >>> useContext <<< } from 'react';
+import AuthContext from '../../context/auth-context'
+
+const cockpit = props => {
+
+    const toggleBtnRef = useRef(null);
+    const authContext = useContext(AuthContext); <<<
+
+    ...code
+
+    return (     
+      <div className={styles.Cockpit}>   
+          <h1>{props.title}</h1>
+          <p className={classes.join(' ')}>Woo, an application made with React</p>
+          <button 
+          ref={toggleBtnRef}
+          className={btnClass}
+          onClick={props.clicked}>Toggle People</button>
+          <button onClick={authContext.login}>Log in</button> <<<
+      </div>
+    );
+```
+
+This is definitely the recommended way of accessing context variables in functional components. 
 
 ## HTTP Requests
 

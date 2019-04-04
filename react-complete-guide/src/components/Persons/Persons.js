@@ -49,7 +49,7 @@ class Persons extends Component {
                     age={person.age}
                     key={person.id}
                     changed={(event) => this.props.changed(event, person.id)}
-                    />
+                />
             });
         }
     };
