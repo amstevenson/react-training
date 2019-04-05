@@ -315,7 +315,21 @@ When using hooks, using setState does not merge the existing state with the new 
 
 In terms of best practice, it is deemed better to have fewer components that manage state to avoid unpredictable behaviour and to make it easier to manage. 
 
-Smart and container components are named for components that manage state. Dumb or presentational containers are ones that do not manage state. 
+Containers are effectively stateful components, created with the class keyword or functional (using useState).
+
+Components going into the components folder are dumb or presentational components that do not manage state:
+
+```
+- components
+    - Presentational container 1 (contains no state related code, only layout JSX)
+    - Presentational container 2
+    - etc
+- containers 
+    - Smart containers 1 (contains state related code/logic)
+    - Smart containers 2
+    - etc
+...other files
+```
 
 ## Passing method references between components
 

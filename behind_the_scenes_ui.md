@@ -1,5 +1,11 @@
 # Behind The Scenes / UI
 
+## UI related notes
+
+Google has a nice place to look for fonts: 
+
+- https://fonts.google.com/?query=open+sans
+
 ## Websites to run test code on
 
 1) codepen.io is great for creating/editing html,css, javascript on the side.
