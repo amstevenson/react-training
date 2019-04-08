@@ -9,9 +9,6 @@ const controls = [
     { label: 'Meat', type: 'meat'},
 ];
 
-let className = styles.BuildControls;
-console.log(className);
-
 const buildControls = (props) => (
     
     <div className={styles.BuildControls}>

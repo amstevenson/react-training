@@ -42,7 +42,13 @@ class BurgerBuilder extends Component {
     }
 
     removeIngredientHandler = (type) => {
-        const updatedCount = this.state.ingredients[type] - 1;
+        const oldCount = this.state.ingredients[type]
+
+        if (oldCount <= 0) {
+            return;
+        }
+
+        const updatedCount = oldCount - 1;
 
         // To avoid mutability issues. It is important to keep trace of the state
         // it was at before to avoid race condition type events. 
