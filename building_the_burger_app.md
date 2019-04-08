@@ -45,3 +45,19 @@ Identifying state of the application; we will need to manage or keep track of:
 ```
 
 The state should be controlled by the page itself, not the layout. 
+
+## Notes when implementing
+
+### When importing an image
+
+Make sure to not hard code a path in an img element. When the application is built for a production environment, the images/files will be moved from the `assets` folder to another one. So hard coded paths will not be able to find the file afterwards. To get past this, import the actual image/file itself and use it in the code:
+
+```
+import burgerLogo from '../../assets/images/burger-logo.png'
+
+const logo = (props) => (
+    <div>
+        <img src={burgerLogo} />
+    </div>
+);
+```
