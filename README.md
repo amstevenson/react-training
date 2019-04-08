@@ -89,10 +89,9 @@
 - [Behind The Scenes and UI tools](./behind_the_scenes_ui.md)
   - Tools to help play around with JavaScript
   - What happens behind the scenes with React
+- [HTTP Requests - Reaching Out To The Web](./http_requests.md)
 
 ## TODO:
-
-### HTTP Requests
 
 ### Routing
 
