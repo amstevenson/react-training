@@ -421,6 +421,18 @@ Person.PropTypes = {
 
 The `Component.PropType` declarations effect is that any props that are passed to the component will be checked, and warnings will be sent in the event that there is a mismatch. 
 
+You can also flag a variable as being required:
+
+```
+Person.PropTypes = {
+    click: PropTypes.func,
+    name: PropTypes.string.isRequired, <<<
+    age: PropTypes.number,
+    children: PropTypes.children,
+    changed: PropTypes.func
+};
+```
+
 More on PropTypes:
 
 - https://reactjs.org/docs/typechecking-with-proptypes.html

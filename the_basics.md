@@ -23,6 +23,8 @@ Simple instructions:
 3) Navigate to newly created folder
 4) npm start // starts up npm and hosts on http://localhost:3000
 
+Note that the `node_modules` folder will not be pushed to GitHub by default and therefore if cloning, dependencies will need to be installed with `npm install` in the directory of the application.
+
 ### Understanding folder structure
 
 package.json lists all the dependencies and scripts for the project. The scripts can be run with:
