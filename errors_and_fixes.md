@@ -16,3 +16,23 @@ const buildControls = (props) => ( <<< don't use {
     </div>
 ); <<< don't use }
 ```
+## Cannot find variable defined in setState
+
+Make sure you are using an arrow function to refer to the state. 
+
+```
+method() = {
+
+}
+
+```
+
+Won't work.
+
+```
+method = () => {
+
+}
+```
+
+Will work. 
