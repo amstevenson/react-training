@@ -23,6 +23,6 @@
 
 @media (min-width: 499px) {
     .DesktopOnly {
-        display: none;
+        display: flex;
     }
 }

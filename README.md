@@ -103,10 +103,9 @@
     - Adding Interceptors to Execute Code Globally 
     - Setting Default Configuration for Axios
     - Creating your own Axios Instance
+- [Routing](./routing.md)
 
 ## TODO:
-
-### Routing
 
 ### Forms and Validation
 
