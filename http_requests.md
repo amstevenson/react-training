@@ -213,3 +213,110 @@ class FullPost extends Component {
     ...the rest...including configured button with an onClick() event that calls the above handler
 ```
 
+## Handling Errors Locally
+
+A really useful feature of Axios is the `.catch` function. It allows you to declare a function that is called when a XMLHttpRequest fails:
+
+```
+class Blog extends Component {
+    
+    state = {
+        posts: [],
+        selectedPostId: null,
+        error: false
+    }
+
+    componentDidMount() {
+        // Remember this triggers a render() function call after it has finished.
+        // 1st argument URL. 2nd to configure request. 
+        // .then() is called after the data has been collected from the API. 
+        axios.get('https://jsonplaceholder.typicode.com/posts')
+            .then(response => {
+                const posts = response.data.slice(0, 4);
+                const updatedPosts = posts.map(post => {
+                    return {
+                        ...post,
+                        author: 'Adam'
+                    }
+                });
+                this.setState({posts: updatedPosts});
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({error: true})
+            });
+    }
+```
+
+This can then be used to update the UI or state as appropriate. 
+
+## Adding Interceptors to Execute Code Globally 
+
+Intereptors can be used in cases where you want to add global functionality that is called when an axios request is used anywhere within your code. These functions can be declared globally and can be called for every request leaving the app and every response coming back. 
+
+Especially useful for common headers (auth header) or responses if we want to log them, or want to handle errors globally. 
+
+These should be declared at the highest possibe point, so possibly in `index.js` or `app.js` respectively. 
+
+Requests going out of the application example (index.js):
+
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+import axios from 'axios';
+
+// Use registers a new Interceptor and takes a configuration/function as an argument
+// This is for requests going out
+axios.interceptors.request.use(request => {
+    console.log('[index.js] Interceptor request: ', request);
+
+    // Edit the request as needed
+
+    // Need to always return the request, otherwise we are blocking it.
+    return request
+}, error => {
+    // Handle any errors that occur
+    console.log('[index.js] Interceptor error found: ', error);
+
+    // By rejecting, we are returning the error to the local file that called
+    // the HTTPRequest. Therefore if that JavaScript file has a local error handler,
+    // that function will be called instead.
+    return Promise.reject(error);
+});
+```
+
+Requests coming back from an API example (index.js):
+
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+import axios from 'axios';
+
+axios.interceptors.response.use(response => {
+    console.log('[index.js] Interceptor response: ', response);
+
+    // Edit the request as needed
+
+    // Need to always return the response, otherwise we are blocking it.
+    return response
+}, error => {
+    // Handle any errors that occur
+    console.log('[index.js] Interceptor error found: ', error);
+
+    // By rejecting, we are returning the error to the local file that called
+    // the HTTPRequest. Therefore if that JavaScript file has a local error handler,
+    // that function will be called instead.
+    return Promise.reject(error);
+});
+```
+
+More info:
+
+- https://github.com/axios/axios#interceptors
+
