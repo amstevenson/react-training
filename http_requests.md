@@ -110,9 +110,6 @@ It would be assumed that pagination would be used alongside this sort of transfo
 
 ## Fetching Data on Update (Without Creating Infinite Loops)
 
-Refer to the following image:
-
-Reference-style: 
 ![alt text][logo]
 
 [logo]: ./lifecycle_class.PNG "Life Cycle classes"
@@ -134,4 +131,33 @@ full post -> render()
 ...forever
 
 ```
+
+To identify if this is happening, select the `Network` tab on Developer Tools. If you see a million requests going off at once, you know there is a problem with potentially nested side effects.
+
+Which is definitely something to look out for. To get around this, we can still use `componentDidUpdate`, but we need to check and make sure that we only send another request if we need to get a new resource:
+
+```
+class FullPost extends Component {
+    
+    state = { 
+        loadedPost: null
+    }
+
+    componentDidUpdate() {
+        if (this.props.id) {
+            
+            // If the post is loaded, and if the id is not equal to the one set, get a resource
+            if (!this.state.loadedPost || 
+                this.state.loadedPost && this.state.loadedPost.id !== this.props.id) {
+                    
+                axios.get('https://jsonplaceholder.typicode.com/posts/' + this.props.id)
+                .then(response => {
+                    this.setState({loadedPost: response.data})
+                });
+            }
+        }
+    }
+```
+
+## POSTing Data to the Server
 
