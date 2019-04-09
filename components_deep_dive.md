@@ -133,6 +133,10 @@ More on State and Lifecycle:
 
 - https://reactjs.org/docs/state-and-lifecycle.html
 
+![alt text][logo]
+
+[logo]: ./lifecycle_class.PNG "Life Cycle classes"
+
 ### Other Class Based Lifecycle functions
 
 `componentWillUnmount` is called when a component is removed from the DOM: 
