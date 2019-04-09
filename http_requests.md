@@ -148,7 +148,7 @@ class FullPost extends Component {
             
             // If the post is loaded, and if the id is not equal to the one set, get a resource
             if (!this.state.loadedPost || 
-                this.state.loadedPost && this.state.loadedPost.id !== this.props.id) {
+                (this.state.loadedPost && this.state.loadedPost.id !== this.props.id)) {
                     
                 axios.get('https://jsonplaceholder.typicode.com/posts/' + this.props.id)
                 .then(response => {
@@ -160,4 +160,56 @@ class FullPost extends Component {
 ```
 
 ## POSTing Data to the Server
+
+There is only a slight difference here between POST and GET:
+
+```
+class NewPost extends Component {
+    state = {
+        title: '',
+        content: '',
+        author: 'Adam'
+    }
+
+    postDataHandler = () => {
+
+        const data = {
+            title: this.state.title,
+            body: this.state.content,
+            author: this.state.author
+        }
+
+        // First is url
+        // Second is data we want to send - It will convert the object to JSON for us
+        // Third argument can be used to configure the request
+        axios.post('https://jsonplaceholder.typicode.com/posts', data)
+            .then(response => {
+                console.log('[NewPost.js] posting new blog response: ', response)
+            });
+    }
+
+    ...the rest...including configured button with an onClick() event that calls the above handler
+```
+
+## Sending a DELETE Request
+
+This is effectively the same as before, except using delete rather than post or get:
+
+```
+class FullPost extends Component {
+    
+    state = { 
+        loadedPost: null
+    }
+
+    deletePostHandler = () => {
+        // First is URL
+        axios.delete('https://jsonplaceholder.typicode.com/posts/' + this.props.id)
+            .then(response => {
+                console.log('[FullPost.js] deleting post response: ', response)
+            });
+    }
+
+    ...the rest...including configured button with an onClick() event that calls the above handler
+```
 

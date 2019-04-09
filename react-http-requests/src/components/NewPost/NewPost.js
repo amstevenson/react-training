@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import './NewPost.css';
 
@@ -6,7 +7,24 @@ class NewPost extends Component {
     state = {
         title: '',
         content: '',
-        author: 'Max'
+        author: 'Adam'
+    }
+
+    postDataHandler = () => {
+
+        const data = {
+            title: this.state.title,
+            body: this.state.content,
+            author: this.state.author
+        }
+
+        // First is url
+        // Second is data we want to send - It will convert the object to JSON for us
+        // Third argument can be used to configure the request
+        axios.post('https://jsonplaceholder.typicode.com/posts', data)
+            .then(response => {
+                console.log('[NewPost.js] posting new blog response: ', response)
+            });
     }
 
     render () {
@@ -22,7 +40,7 @@ class NewPost extends Component {
                     <option value="Max">Max</option>
                     <option value="Manu">Manu</option>
                 </select>
-                <button>Add Post</button>
+                <button onClick={this.postDataHandler}>Add Post</button>
             </div>
         );
     }
