@@ -218,3 +218,142 @@ It is best practice when configuring the pathName for a Link container to provid
 
 This is achived by using the `this.props.match.url` value and appending the route on the end. However, this needs to be set for this functionality to be available. 
 
+## Using NavLink - Styling the Active Route
+
+This is basically the same as `Link` except it has some special styling to it: 
+
+```
+    <nav>
+        <ul>
+            <li><NavLink 
+                exact 
+                to="/"
+                activeClassName="active"
+                activeStyle={{
+                    color: '#fa923f',
+                    textDecoration: 'underline'
+                }}>Home</NavLink></li>
+            <li><NavLink to={{
+                pathname: '/new-post', 
+                hash: '#submit',
+                search: '?quick-submit=true' // Where we are going to when we click
+            }}>New Post</NavLink></li>
+        </ul>
+    </nav>
+```
+
+The active class allows for styling to be added. Akin to the whole "if this page is selected", show this colour or these styles. 
+
+Exact needs to be used, else both navigation links in the example will be highlighted. This is because both will be treated as being valid else. 
+
+## Ordering of Routes
+
+It is important to note that Routes are rendered from top to bottom:
+
+```
+// The order is "/", "/new-post" and then "/:id".
+<Route path="/" exact component={Posts} />  
+<Route path="/new-post" component={NewPost} />  
+<Route path="/:id" exact component={Posts} /> 
+```
+
+## Extracting Route Parameters
+
+This section describes how to get parameters that are part of the url, and use them. For example:
+
+- `/post/1` - How do we get the `1` and use it? 
+
+Defined in Blog.js:
+
+```
+<Route path="/:id" exact component={FullPost} />
+```
+
+Calls FullPost.js:
+
+```
+class FullPost extends Component {
+    state = {
+        loadedPost: null
+    }
+
+    componentDidMount () {
+        if ( this.props.id ) {
+            if ( !this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== this.props.id) ) {
+                axios.get( '/posts/' + this.props.id )
+                    .then( response => {
+                        // console.log(response);
+                        this.setState( { loadedPost: response.data } );
+                    } );
+            }
+        }
+    }
+
+    ...the rest
+```
+
+`componentDidMount` is used on initialisation. Therefore we can hook into the parameters of the Route container to find out what the passed in `:id` is. 
+
+### More Information on Parsing Query Parameters & the Fragment
+
+How do you extract search (also referred to as "query") parameters (=> ?something=somevalue  at the end of the URL)? How do you extract the fragment (=> #something  at the end of the URL)?
+
+#### Query Params
+
+You can pass them easily like this:
+
+```
+<Link to="/my-path?start=5">Go to Start</Link> 
+```
+
+or
+
+```
+<Link 
+    to={‌{
+        pathname: '/my-path',
+        search: '?start=5'
+    }}
+    >Go to Start</Link>
+```
+
+React router makes it easy to get access to the search string: `props.location.search` .
+
+But that will only give you something like `?start=5`
+
+You probably want to get the key-value pair, without the ?  and the = . Here's a snippet which allows you to easily extract that information:
+
+```
+componentDidMount() {
+    const query = new URLSearchParams(this.props.location.search);
+    for (let param of query.entries()) {
+        console.log(param); // yields ['start', '5']
+    }
+}
+```
+
+`URLSearchParams` is a built-in object, shipping with vanilla JavaScript. It returns an object, which exposes the `entries()`  method. `entries()` returns an Iterator - basically a construct which can be used in a for loop (as shown above).
+
+When looping through `query.entries()` , you get arrays where the first element is the key name (e.g. start ) and the second element is the assigned value (e.g. 5 ).
+
+#### Fragment
+
+You can pass it easily like this:
+
+```
+<Link to="/my-path#start-position">Go to Start</Link> 
+```
+
+or
+
+```
+<Link 
+    to={‌{
+        pathname: '/my-path',
+        hash: 'start-position'
+    }}
+    >Go to Start</Link>
+```
+
+React router makes it easy to extract the fragment. You can simply access `props.location.hash` .
+
