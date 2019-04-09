@@ -12,7 +12,9 @@ Axios is a third party library package which you can add to any JavaScript proje
 
 https://github.com/axios/axios
 
-Makes it simpler to make XMLHTTPRequests. 
+Make sure to install it with:
+
+- npm install axios --save
 
 ### Cool Way to Test HTTP Requests
 
@@ -320,3 +322,43 @@ More info:
 
 - https://github.com/axios/axios#interceptors
 
+## Setting Default Configuration for Axios
+
+We can set a default baseURL for axios:
+
+- `axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';`
+
+Which will effectively mean that any axios.get, delete or post request will use that automatically. Therefore after making that change, to do a get, all we need is: 
+
+```
+    axios.get('/posts')
+        .then(response => {
+```
+
+Rather than having to also include the URL. 
+
+### Creating your own Axios Instance !Important
+
+If we don't want to use the baseURL for the entire application, but only for parts of it, and for other parts a different URL, we can use a feature by axios called instances. This effectively means creating an new axios object and changing specific variables.
+
+axios.js:
+
+```
+import axios from 'axios';
+
+// Create an instance of axios, or a copy
+const instance = axios.create({
+    baseURL: 'https://jsonplaceholder.typicode.com'
+});
+
+instance.defaults.headers.common['Authorization'] = 'AUTH TOKEN FROM INSTANCE';
+instance.defaults.headers.post['Content-Type'] = 'application/json';
+
+export default instance;
+```
+
+To use it in a file, it simply needs to be imported and then used like normal:
+
+- `import axios from '../../axios';`
+
+Afterwards, any reference to `axios` will be treated the same as before. 

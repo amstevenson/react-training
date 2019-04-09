@@ -21,7 +21,7 @@ class NewPost extends Component {
         // First is url
         // Second is data we want to send - It will convert the object to JSON for us
         // Third argument can be used to configure the request
-        axios.post('https://jsonplaceholder.typicode.com/posts', data)
+        axios.post('/posts', data)
             .then(response => {
                 console.log('[NewPost.js] posting new blog response: ', response)
             });

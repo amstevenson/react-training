@@ -90,6 +90,19 @@
   - Tools to help play around with JavaScript
   - What happens behind the scenes with React
 - [HTTP Requests - Reaching Out To The Web](./http_requests.md)
+    - Http Requests in React (Typically)
+    - Introducing Axios
+    - Cool Way to Test HTTP Requests
+    - Creating a HTTP Request to GET Data
+    - Rendering Fetched Data To The Screen
+    - Transforming Data
+    - Fetching Data on Update (Without Creating Infinite Loops)
+    - POSTing Data to the Server
+    - Sending a DELETE Request
+    - Handling Errors Locally
+    - Adding Interceptors to Execute Code Globally 
+    - Setting Default Configuration for Axios
+    - Creating your own Axios Instance
 
 ## TODO:
 
