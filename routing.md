@@ -475,3 +475,121 @@ This will put a page on the history stack, and after it is added, the user will 
 
 ## Working With Guards
 
+A Guard is used when we are not sure if a user is authenticated or not. Some Routes are only allowed to be visited if they are authenticated. 
+
+In React, it's different to Angular in the sense that this should be achieved conditionally. For example, use state to store if a user is authenticated and then only redirect to a page if they are allowed there. 
+
+## Code Splitting / Lazy Loading
+
+### Before 16.6
+
+This allows us to only load code to a JavaScript file when we need it. Useful in larger applications when a lot of information is being used. 
+
+For this a Higher Order Component is needed. This will effectively import and return a component back:
+
+```
+import React, { Component } from 'react';
+
+// Load a component only when needed. importComponent should be a func reference
+const asyncComponent = (importComponent) => {
+    return class extends Component {
+        
+        state = {
+            // Will be set to the dynamically loaded component
+            component: null
+        }
+        
+        componentDidMount() {
+            // Function returns a promise. 
+            // Therefore this relys on the type of the component
+            importComponent()
+                .then(cmp => {
+                    this.setState({component: cmp.default});
+                });
+        }
+        
+        render () {
+            const C = this.state.component;
+
+            // Return C with splitted props (if any) or nothing if not set
+            return C ? <C {...this.props}/> : null;
+        }
+    }
+}
+
+export default asyncComponent;
+```
+
+We can then use `asyncComponent` to manage when a particular component is imported:
+
+```
+    ... other imports
+    const AsyncNewPost = asyncComponent(() => {
+
+        // Only import when the function is executed (once asyncComponent is used)
+        return import('./NewPost/NewPost');
+    });
+
+    ... code
+
+    {this.state.auth ? <Route path="/new-post" component={AsyncNewPost} /> : null }
+
+```
+
+In terms of what is stored relative to this file, it will only primarilly include `asyncComponent`. It will then only import `'./NewPost/NewPost'` when the code related to the Route component is executed. 
+
+### After 16.6
+
+React 16.6 introduced `React.lazy()`. Which effectively provides the functionality that the `asyncComponent` in the above section gives us. 
+
+```
+... imports
+import React, { Component, Suspense } from 'react';
+
+const Posts = React.lazy(() => import('./containers/Posts'));
+
+...code
+render() {
+    <Route path="/posts" render={() => (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Post />
+        </Suspense>
+    )}>
+}
+
+```
+
+Fallback is used if React postpones the rendering of the React component.
+
+Effectively, `Suspense` and `React.lazy()` are needed to achieve this. It will then only load the file when needed. 
+
+## Routing and The Server (Deployment)
+
+Important to note when hosting a React app, is that a 404 will be returned for a Route by default. This is because the Server will attempt to get the HTML representation for a path (for example `/posts`). 
+
+React however (and probably other frameworks too) works in a way where the application gets the incoming request and then determines what the HTML content would be based on the URL that the request forwards on. This effectively is shown as: 
+
+```
+Server -> React App
+Server (404 not found)
+
+React App -> figures out content based on request
+```
+
+To get past this problem, the configuration for the server being used will need to change to allow requests to go through to the application even if a 404 is found. 
+
+![alt text][logo2]
+
+[logo2]: ./route_deploy.PNG "Routing deployment"
+
+You also need to configure the base path for the React app too, so for `example.com/my-app`, the base url would be `my-app`. Otherwise, the likely scenario is that the URL will not be prefixed correctly. 
+
+Using `BrowerRouter` this can be quite a simple change:
+
+```
+<BrowserRouter basename="/my-app">
+    <The App>
+</BrowserRouter>
+```
+
+Then for all requests they will have the prefix of `"/my-app"`. 

@@ -13,6 +13,9 @@ class NewPost extends Component {
     }
 
     componentDidMount() {
+        // Add conditionals surrounding authentication
+        // If unauth => redirect with history
+
         console.log(this.props);
     }
 
