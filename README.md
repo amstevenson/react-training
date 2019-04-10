@@ -130,12 +130,11 @@
         - Before 16.6
         - After 16.6
     - Routing and The Server (Deployment)
+- [Redux](./redux.md)
 
-## TODO:
+## Remaining:
 
 ### Forms and Validation
-
-### Redux
 
 ### Authentication
 
