@@ -130,9 +130,34 @@
         - Before 16.6
         - After 16.6
     - Routing and The Server (Deployment)
-- [Redux](./redux.md)
+- [Redux Basics](./redux.md)
+    - State Can Be Complex
+    - Redux to the Rescue
+    - Setting up Redux (Outside of a React Application)
+        - Setting up Reducer and Store
+        - Dispatching Actions
+        - Adding Subscriptions
+    - Connecting Redux to React (In a React Application)
+        - Creating the Store
+        - Creating the Reducer
+        - Connecting the Store to React
+        - Dispatching Actions From The Component (Updating The Redux Store)
+        - Passing and Retrieving Data With Actions
+    - Getting A Value Passed To The mapDispatchToProps Function
+    - Avoiding Mutation When Updating Redux Store State 
+        - Common Mistake #1: New variables that point to the same objects
+        - Common Mistake #2: Only making a shallow copy of one level
+        - Correct Approach: Copying All Levels of Nested Data
+        - Inserting and Removing Items in Arrays
+        - Updating an Item in an Array
+        - Immutable Update Utility Libraries
+    - Defining Actions as Enums/Constants
+    - Combining Multiple Reducers
+    - Understanding State Types - Should Every State Be Handled Through Redux?
 
 ## Remaining:
+
+### Redux Advanced
 
 ### Forms and Validation
 

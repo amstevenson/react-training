@@ -795,9 +795,12 @@ export default connect(mapStateToProps, mapDispatchToProps) (Counter);
 
 If a Reducer needs values from another, that these values should be provided by Components. The above JavaScript file required that change, so the `mapDispatchToProps` and button events had to be changed appropriately to accomodate for this. 
 
-## Understanding State Types
-
-### Should every State be handled through Redux?
+## Understanding State Types - Should Every State Be Handled Through Redux?
 
 Depends on the size of the application. If its a small application, the benefits of Redux may be minimal. If it is a large application, it would probably be a good idea to use it. We still then need to ask the question of which State we should manage. 
 
+What is important to note is that Redux is not a replacement for a database. So information related to all posts, blogs, etc, should be kept on a database which is updated with side effects. Every time the user refreshes the page, the state is gone, so that is something to bear in mind too. 
+
+![alt text][logo3]
+
+[logo3]: ./redux_types_of_state.PNG "Redux Types Of State"
