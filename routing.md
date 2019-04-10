@@ -357,3 +357,121 @@ or
 
 React router makes it easy to extract the fragment. You can simply access `props.location.hash` .
 
+## Switching with Routes - render only one
+
+Wrapping routes with a Switch means that only one is rendered, instead of all of them.
+
+```
+import { Route, NavLink, Switch } from 'react-router-dom';
+
+    <Switch>
+        <Route path="/" exact component={Posts} />  
+        <Route path="/new-post" component={NewPost} />  
+        <Route path="/:id" exact component={FullPost} /> 
+    </Switch>
+```
+
+## Navigating Programatically
+
+Useful for if you want to go to another page after something has happened, like a HTTP Request for example. 
+
+```
+    postSelectedHandler = (id) => {
+        this.props.history.push({pathname: '/' + id});
+    }
+
+    ... render()
+        return <Post 
+                    key={post.id}
+                    title={post.title} 
+                    author={post.author}
+                    clicked={() => this.postSelectedHandler(post.id)}  />
+```
+
+## Understanding Nested Routes
+
+When we want to load a component inside of another component, both of which use Routing. 
+
+`Blog.js`
+
+```
+    <Switch> 
+        <Route path="/new-post" component={NewPost} />  
+        <Route path="/posts" component={Posts} /> 
+    </Switch>
+```
+
+calls `Posts.js`
+
+```
+    return (
+        <div>
+            <section className="Posts">
+                {posts}
+            </section>
+            <Route path={this.props.match.url + '/:id'} exact component={FullPost} /> 
+        </div>
+    );
+```
+
+The props url property allows us to find the dynamic url to append the id to. 
+
+!Important
+
+`componentDidMount` will not be called every time a button is clicked. So if stuff doesn't look like it is refreshing, `componentDidUpdate` can be used instead. However, be cautious of causing an infinite loop, make sure to add conditions to prevent this from occurring. 
+
+When using nested routes, the `props.match.params.id` property should be used to get the value of an attribute, which makes sense because you will be fetching it from there, as opposed to state. 
+
+## Redirecting Requests - Defaults
+
+The `Redirect` import can be used to achieve redirecting. Ensures that the user is moved/navigated to the routes we want to have him or her on. 
+
+```
+import { Redirect } from 'react-router-dom';
+
+    <Switch> 
+        <Route path="/new-post" component={NewPost} />  
+        <Route path="/posts" component={Posts} /> 
+        <Redirect from ='/' to ='/posts' />
+    </Switch>
+```
+
+Conditional Redirects can also be used:
+
+```
+    render () {
+
+        let redirect = null;
+        if (this.state.submitted) {
+            redirect = <Redirect to ='/posts' />
+        }
+
+        return (
+            <div className="NewPost">
+                {redirect}
+```
+
+This may be useful when the user needs to be moved once an action has been performed; like submitting a form. 
+
+Alternatively, the history prop can be used:
+
+```
+    postDataHandler = () => {
+        const data = {
+            title: this.state.title,
+            body: this.state.content,
+            author: this.state.author
+        };
+        axios.post('/posts', data)
+            .then(response => {
+                console.log(response);
+
+                this.props.history.replace('/posts') <<<
+            });
+    }
+```
+
+This will put a page on the history stack, and after it is added, the user will be redirected. Using replace means that the back button will not return the user to the page they were on. To allow for back button functionality, `push` can be used instead of `replace`.
+
+## Working With Guards
+
