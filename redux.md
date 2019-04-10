@@ -804,3 +804,11 @@ What is important to note is that Redux is not a replacement for a database. So 
 ![alt text][logo3]
 
 [logo3]: ./redux_types_of_state.PNG "Redux Types Of State"
+
+## Useful Resources and Links
+
+- Redux Docs: http://redux.js.org/
+- Core Concepts: http://redux.js.org/docs/introduction/CoreConcepts.html
+- Actions: http://redux.js.org/docs/basics/Actions.html
+- Reducers: http://redux.js.org/docs/basics/Reducers.html
+- Redux FAQs: http://redux.js.org/docs/FAQ.html

@@ -154,6 +154,7 @@
     - Defining Actions as Enums/Constants
     - Combining Multiple Reducers
     - Understanding State Types - Should Every State Be Handled Through Redux?
+    - Useful Resources and Links
 
 ## Remaining:
 
