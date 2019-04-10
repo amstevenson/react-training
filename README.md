@@ -104,6 +104,32 @@
     - Setting Default Configuration for Axios
     - Creating your own Axios Instance
 - [Routing](./routing.md)
+    - Setting Up the Router Package
+    - Setting Up and Rendering Routes
+        - Rendering JSX in Routes
+        - Rendering Components in Routes
+    - Using Links to Switch Pages
+    - Using Routing Related Props
+    - Passing Down Router Props to Nested Components
+    - Absolute vs Relative Paths
+        - Absolute Paths
+        - Relative Paths
+        - Making a Link Relative, not Absolute
+    - Using NavLink - Styling the Active Route
+    - Ordering of Routes
+    - Extracting Route Parameters
+        - More Information on Parsing Query Parameters & the Fragment
+            - Query Params
+            - Fragment
+    - Switching with Routes - render only one
+    - Navigating Programatically
+    - Understanding Nested Routes
+    - Redirecting Requests - Defaults
+    - Working With Guards
+    - Code Splitting / Lazy Loading
+        - Before 16.6
+        - After 16.6
+    - Routing and The Server (Deployment)
 
 ## TODO:
 
