@@ -155,6 +155,7 @@
     - Combining Multiple Reducers
     - Understanding State Types - Should Every State Be Handled Through Redux?
     - Useful Resources and Links
+- [Redux Advanced](./redux_advanced.md)
 
 ## Remaining:
 
