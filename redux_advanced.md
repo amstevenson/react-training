@@ -112,3 +112,84 @@ const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger))
 Pretty shwifty. The State tab is especially useful. 
 
 ## Executing Asynchronous Code
+
+`Action Creators` can be used to create asynchronous code in React. 
+
+### Including Action Creators
+
+These are functions that create actions. This would effectively return what we send into a dispatch call as the first parameter. For example: 
+
+- `{type: actionTypes.INCREMENT}`
+
+#### Running Action Creators Synchronously
+
+To run an action creator synchronously, we can export the actions and use them in the `mapDispactToProps` file: 
+
+```
+export const INCREMENT = 'INCREMENT';
+export const DECREMENT = 'DECREMENT';
+export const ADD = 'ADD';
+export const SUBTRACT = 'SUBTRACT';
+export const STORE_RESULT = 'STORE_RESULT';
+export const DELETE_RESULT = 'DELETE_RESULT';
+
+// Recieves any payload we want to send with our action
+export const increment = () => {
+    return {
+        type: INCREMENT
+    };
+};
+
+export const decrement = () => {
+    return {
+        type: DECREMENT
+    };
+};
+
+export const add = (value) => {
+    return {
+        type: ADD,
+        val: value
+    };
+};
+
+export const subtract = (value) => {
+    return {
+        type: SUBTRACT,
+        val: value
+    };
+};
+
+export const store_result = (result) => {
+    return {
+        type: STORE_RESULT,
+        result: result
+    };
+};
+
+export const delete_result = (id) => {
+    return {
+        type: DELETE_RESULT,
+        resultElId: id
+    };
+};
+```
+
+And then refer to them in the `mapDispactToProps`: 
+
+```
+const mapDispatchToProps = dispatch => {
+    return {
+        onIncrementCounter: () => dispatch(actionCreators.increment()),
+        onDecrementCounter: () => dispatch(actionCreators.decrement()),
+        onAddCounter: () => dispatch(actionCreators.add(10)),
+        onSubtractCounter: () => dispatch(actionCreators.subtract(15)),
+        onStoreResult: (result) => dispatch(actionCreators.store_result(result)),
+        onDeleteResult: (id) => dispatch(actionCreators.delete_result(id))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+```
+
+#### Taking The Above - Running Action Creators Asynchronously
