@@ -156,6 +156,17 @@
     - Understanding State Types - Should Every State Be Handled Through Redux?
     - Useful Resources and Links
 - [Redux Advanced](./redux_advanced.md)
+    - Adding Middleware
+    - Using the Redux Devtools
+    - Executing Asynchronous Code
+        - Including Action Creators
+            - Running Action Creators Synchronously
+            - Taking The Above - Running Action Creators Asynchronously
+    - Restructuring Actions - Best Practice (Exporting Actions In a More Lean Way)
+    - Where to Put Data Transforming Logic
+        - Using Action Creators and Get State
+    - Using Utility Functions (Making Reducers Cleaner/Leaner)
+- [Testing React Apps](./testing_react_apps.md)
 
 ## Remaining:
 

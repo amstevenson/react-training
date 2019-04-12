@@ -193,3 +193,209 @@ export default connect(mapStateToProps, mapDispatchToProps)(Counter);
 ```
 
 #### Taking The Above - Running Action Creators Asynchronously
+
+A third party library can be used for this calle `redux-thunk`. Allows for the action creators to not return the action itself (`actions.js`) but return a function that will eventually dispatch an action. 
+
+With this trick we can run asynchronous code, because the eventually dispatched part is the part that needs to be run synchronously. 
+
+To install this: 
+
+-  `npm install --save redux-thunk`
+
+This can then be imported and applied as middleware given the example in the previous section: 
+
+```
+import thunk from 'redux-thunk';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, thunk)));
+```
+
+Next, assuming we want to run asynchronous code on an action:
+
+```
+// Synchronous
+export const saveResult = (res) => {
+    return {
+        type: STORE_RESULT,
+        result: res
+    };
+}
+
+export const store_result = (res) => {
+
+    // Simulate an API call (two seconds) then 
+    // only return after it has finished. 
+    return dispatch => {
+
+        // Run set timeout before dispatching
+        setTimeout(() => {
+
+            // Pass the payload to the store
+            dispatch(saveResult(res))
+        }, (2000));
+    }
+};
+```
+
+We still return a default action, but at that point thunk steps in, blocks the old action and then dispatches it again in the future. In between, redux thunk is able to wait because it can dispatch the function whenever it want. Using that, we can execute code within the function before dispatching. 
+
+It is important to note that only synchronous actions can update the store.
+
+## Restructuring Actions - Best Practice (Exporting Actions In a More Lean Way)
+
+The above `actions.js` can look a little better. By breaking up the actions into different files (one for counter related actions and another for results). 
+
+Then having a central one that exports everything we need: 
+
+```
+// Single file to export all actions
+export {
+    add,
+    subtract,
+    increment,
+    decrement
+} from './counter'
+
+export {
+    store_result,
+    delete_result
+} from './result'
+```
+
+## Where to Put Data Transforming Logic 
+
+When creating and sending a HTTPRequest asynchronously, run it in place of set timeout below in an action creator (`result.js`):
+
+```
+// Synchronous
+export const saveResult = (res) => {
+    return {
+        type: actionTypes.STORE_RESULT,
+        result: res
+    };
+}
+
+export const store_result = (res) => {
+
+    // Simulate an API call (two seconds) then 
+    // only return after it has finished. 
+    return dispatch => {
+
+        // Run set timeout before dispatching
+        setTimeout(() => {
+
+            // Pass the payload to the store
+            dispatch(saveResult(res))
+        }, (2000));
+    }
+};
+```
+
+Thinking about saveResult above, if we were manipulating data (for example doing `res * 2` for the above), where should we change it? In the action creator or the reducer?
+
+The preference seems to be the reducer. Mostly because it is the core place for updating state. However, there are arguments for doing it in the other place too. It is best to choose an approach and not deviate from it. Else it gets pretty confusing and hard to maintain. 
+
+![alt text][logo]
+
+[logo]: ./redux_state_logic.PNG "Redux State Logic"
+
+### Using Action Creators and Get State
+
+If updated the state in the action creator, we can use `getState` as a parameter in our asynchronous code. This allows us to query the previous state before calling our HTTPRequest for example. 
+
+```
+export const store_result = (res) => {
+
+    // Simulate an API call (two seconds) then 
+    // only return after it has finished. 
+    return (dispatch, getState) => {
+
+        // Run set timeout before dispatching
+        setTimeout(() => {
+            const oldCounter = getState().ctr.counter;
+            console.log(oldCounter)
+
+            // Pass the payload to the store
+            dispatch(saveResult(res))
+        }, (2000));
+    }
+};
+```
+
+However, best practice is to pass the needed variable as a parameter to the function, rather than using `getState`. In certain cases though, it may be hard to do that. In those cases `getState` is there as a fallback. 
+
+## Using Utility Functions (Making Reducers Cleaner/Leaner)
+
+Advanced Reducers setup. 
+
+Can create a reusable utility file to update the state:
+
+(`utility.js`):
+
+```
+export const updateObject = (oldObject, updatedValues) => {
+    return {
+        ...oldObject,
+        ...updatedValues
+    }
+};
+```
+
+Which can then be used in `counter.js` to reduce the amount of code that is used:
+
+```
+import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from '../utility';
+
+const initialState = {
+    counter: 0
+};
+
+const reducer = ( state = initialState, action ) => {
+    switch ( action.type ) {
+        case actionTypes.INCREMENT:
+            return updateObject(state, {counter: state.counter + 1})
+
+        case actionTypes.DECREMENT:
+            return updateObject(state, {counter: state.counter - 1})
+
+        case actionTypes.ADD:
+            return updateObject(state, {counter: state.counter + action.val})
+
+        case actionTypes.SUBTRACT:
+            return updateObject(state, {counter: state.counter - action.val})
+
+    }
+    return state;
+};
+
+export default reducer;
+```
+
+and in `reducer.js`:
+
+```
+import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from '../utility'
+
+const initialState = {
+    results: []
+};
+
+const reducer = ( state = initialState, action ) => {
+    switch ( action.type ) {
+        case actionTypes.STORE_RESULT:
+
+            return updateObject(state, {results: state.results.concat({id: new Date(), value: action.result})})
+
+        case actionTypes.DELETE_RESULT:
+            
+            const updatedArray = state.results.filter(result => result.id !== action.resultElId);
+            return updateObject(state, {results: updatedArray})
+    }
+    return state;
+};
+
+export default reducer;
+```
