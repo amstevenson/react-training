@@ -1,26 +1,3 @@
-# Testing React Apps
-
-## What To Test
-
-Do not want to test libraries. Such as Redux itself, or anything imported from a node package. Nothing from third development parties. 
-
-Certain tests could include for Components if the page is rendered correctly, if the individual functions declared return what they are meant to be returning. 
-
-![alt text][logo]
-
-[logo]: ./what_to_test.PNG "What To Test"
-
-## Writing Tests
-
-To write tests, we will need to install some additional packages.
-
-- `npm install --save enzyme react-test-renderer enzyme-adapter-react-16`
-
-All of these are then added to the `package.json` file. 
-
-We can then navigate to a component that needs testing and add a js file alongside it. For example: `Navigationitems.test.js`. Using `create-react-app` this is automatically avilable. This will look like the following:
-
-```
 import React from 'react';
 
 // Configure Enzyme and connect it to the react version
@@ -75,25 +52,3 @@ describe('<NavigationItems />', () => {
         expect(wrapper.contains(<NavigationItem link="/logout">Logout</NavigationItem>)).toEqual(true);
     });
 });
-```
-
-### Running the Tests
-
-Simply run `npm run test`. It will automatically scan for all test files. 
-
-If you get an error try deleting the `App.test.js` file and then run again. 
-
-For the application `react-testing`, all three tests should pass.
-
-### Reference Point for BB Tests
-
-- Redux: `auth.test.js` (without testing connecting to Redux, but instead the Reducers and the logic within them)
-- Containers: `BurgetBuilder.test.js`
-- Components: `NavigationItems.test.js`
-
-## Jest and Enzyme Documentation
-
-Jest - https://jestjs.io/docs/en/getting-started.html (JavaScript test runner - includes details on how to mock function calls, which seems especially useful)
-
-Enzyme - https://airbnb.io/enzyme/ (contains information about shallow, etc)
-
