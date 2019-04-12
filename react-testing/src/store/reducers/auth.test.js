@@ -20,6 +20,8 @@ describe('auth reducer', () => {
             loading: false,
             authRedirectPath: '/'
         }, { 
+            // Note that the exact value does not 
+            // matter for the test
             type: actionTypes.AUTH_SUCCESS,
             idToken: 'some-token',
             userId: 'some-user-id'

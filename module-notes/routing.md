@@ -6,7 +6,7 @@ The effective outcome is that a user will go to a route, a config will be read, 
 
 ![alt text][logo]
 
-[logo]: ./routing_intro.PNG "Routing intro"
+[logo]: ./images/routing_intro.PNG "Routing intro"
 
 ## Setting Up the Router Package
 
@@ -580,7 +580,7 @@ To get past this problem, the configuration for the server being used will need 
 
 ![alt text][logo2]
 
-[logo2]: ./route_deploy.PNG "Routing deployment"
+[logo2]: ./images/route_deploy.PNG "Routing deployment"
 
 You also need to configure the base path for the React app too, so for `example.com/my-app`, the base url would be `my-app`. Otherwise, the likely scenario is that the URL will not be prefixed correctly. 
 

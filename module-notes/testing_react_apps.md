@@ -8,7 +8,7 @@ Certain tests could include for Components if the page is rendered correctly, if
 
 ![alt text][logo]
 
-[logo]: ./what_to_test.PNG "What To Test"
+[logo]: ./images/what_to_test.PNG "What To Test"
 
 ## Writing Tests
 
@@ -96,4 +96,3 @@ For the application `react-testing`, all three tests should pass.
 Jest - https://jestjs.io/docs/en/getting-started.html (JavaScript test runner - includes details on how to mock function calls, which seems especially useful)
 
 Enzyme - https://airbnb.io/enzyme/ (contains information about shallow, etc)
-

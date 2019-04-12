@@ -10,7 +10,7 @@ To talk between sides would be convoluted if we had to create connections betwee
 
 ![alt text][logo]
 
-[logo]: ./state_complex.PNG "State Complex"
+[logo]: ./images/state_complex.PNG "State Complex"
 
 ## Redux to the Rescue
 
@@ -36,7 +36,7 @@ How do we get the updated state back into our component? A `Subscription Model` 
 
 ![alt text][logo2]
 
-[logo2]: ./redux_rescue.PNG "Redux Rescue"
+[logo2]: ./images/redux_rescue.PNG "Redux Rescue"
 
 ## Setting up Redux (Outside of a React Application)
 
@@ -803,7 +803,7 @@ What is important to note is that Redux is not a replacement for a database. So 
 
 ![alt text][logo3]
 
-[logo3]: ./redux_types_of_state.PNG "Redux Types Of State"
+[logo3]: ./images/redux_types_of_state.PNG "Redux Types Of State"
 
 ## Useful Resources and Links
 

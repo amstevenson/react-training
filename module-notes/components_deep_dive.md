@@ -135,7 +135,7 @@ More on State and Lifecycle:
 
 ![alt text][logo]
 
-[logo]: ./lifecycle_class.PNG "Life Cycle classes"
+[logo]: ./images/lifecycle_class.PNG "Life Cycle classes"
 
 ### Other Class Based Lifecycle functions
 

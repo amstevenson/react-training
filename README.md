@@ -2,7 +2,7 @@
 
 ## List of Modules
 
-- [Next-Gen JavaScript](./next_gen_js.md)
+- [Next-Gen JavaScript](./module-notes/next_gen_js.md)
   - Understanding Let and Const
   - Arrow Functions
   - Exports and Imports
@@ -11,7 +11,7 @@
   - The Spread and Rest Operator
   - Destructuring
   - Reference and Primitive Types
-- [The Basics](./the_basics.md)
+- [The Basics](./module-notes/the_basics.md)
   - Build Workflow
   - Creating a template application
   - Understanding the folder structure
@@ -33,7 +33,7 @@
   - Adding two way binding
   - Adding styling with spreadsheets
   - Working with inline styles
-- [Working with Lists and Conditionals](./working_with_lists_and_conditionals.md)
+- [Working with Lists and Conditionals](./module-notes/working_with_lists_and_conditionals.md)
   - Rendering content conditionally
   - Handling dynamic content the JavaScript way
   - Ouputting Lists
@@ -41,7 +41,7 @@
   - Updating State immutably
   - List and keys
   - Flexible lists
-- [Styling React Components](./styling_react_components.md)
+- [Styling React Components](./module-notes/styling_react_components.md)
   - Setting styles dynamically
   - Setting class names dynamically
   - Adding and using Radium
@@ -49,12 +49,12 @@
   - Enabling and using css modules
   - Adding psuedo selectors
   - Working with media queries
-- [Debugging](./debugging.md)
+- [Debugging](./module-notes/debugging.md)
   - Understanding error messages
   - Finding Logical errors by using dev tools and sourcemaps
   - Working with the React developer tools 
   - Using error boundaries (React 16+)
-- [Components Deep Dive](./components_deep_dive.md)
+- [Components Deep Dive](./module-notes/components_deep_dive.md)
   - A better project structure
   - Splitting an app into components
   - Comparing stateless and stateful components
@@ -84,12 +84,9 @@
   - Understanding prop chain problems
   - Using the Context API
   - contextType and useContext() 
-- [Building the Burger App](./building_the_burger_app.md)
+- [Building the Burger App](./module-notes/building_the_burger_app.md)
   - Layout and design
-- [Behind The Scenes and UI tools](./behind_the_scenes_ui.md)
-  - Tools to help play around with JavaScript
-  - What happens behind the scenes with React
-- [HTTP Requests - Reaching Out To The Web](./http_requests.md)
+- [HTTP Requests - Reaching Out To The Web](./module-notes/http_requests.md)
     - Http Requests in React (Typically)
     - Introducing Axios
     - Cool Way to Test HTTP Requests
@@ -103,7 +100,7 @@
     - Adding Interceptors to Execute Code Globally 
     - Setting Default Configuration for Axios
     - Creating your own Axios Instance
-- [Routing](./routing.md)
+- [Routing](./module-notes/routing.md)
     - Setting Up the Router Package
     - Setting Up and Rendering Routes
         - Rendering JSX in Routes
@@ -130,7 +127,7 @@
         - Before 16.6
         - After 16.6
     - Routing and The Server (Deployment)
-- [Redux Basics](./redux.md)
+- [Redux Basics](./module-notes/redux.md)
     - State Can Be Complex
     - Redux to the Rescue
     - Setting up Redux (Outside of a React Application)
@@ -155,7 +152,7 @@
     - Combining Multiple Reducers
     - Understanding State Types - Should Every State Be Handled Through Redux?
     - Useful Resources and Links
-- [Redux Advanced](./redux_advanced.md)
+- [Redux Advanced](./module-notes/redux_advanced.md)
     - Adding Middleware
     - Using the Redux Devtools
     - Executing Asynchronous Code
@@ -166,9 +163,17 @@
     - Where to Put Data Transforming Logic
         - Using Action Creators and Get State
     - Using Utility Functions (Making Reducers Cleaner/Leaner)
-- [Testing React Apps](./testing_react_apps.md)
+- [Testing React Apps](./module-notes/testing_react_apps.md)
+    - What To Test
+    - Writing Tests
+        - Running the Tests
+        - Reference Point for BB Tests
+    - Jest and Enzyme Documentation
+- [Behind The Scenes and UI tools](./module-notes/behind_the_scenes_ui.md)
+  - Tools to help play around with JavaScript
+  - What happens behind the scenes with React
 
-## Remaining:
+## Other sections to complete:
 
 ### Redux Advanced
 
