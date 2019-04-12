@@ -114,7 +114,7 @@ It would be assumed that pagination would be used alongside this sort of transfo
 
 ![alt text][logo]
 
-[logo]: ./lifecycle_class.PNG "Life Cycle classes"
+[logo]: ./images/lifecycle_class.PNG "Life Cycle classes"
 
 It would be assumed that performing a HTTP Request in `componentDidUpdate()` would make sense. However, if the component making this request was called by another component that also makes a request. It will go in an infinite loop:
 

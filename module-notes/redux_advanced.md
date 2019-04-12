@@ -298,7 +298,7 @@ The preference seems to be the reducer. Mostly because it is the core place for 
 
 ![alt text][logo]
 
-[logo]: ./redux_state_logic.PNG "Redux State Logic"
+[logo]: ./images/redux_state_logic.PNG "Redux State Logic"
 
 ### Using Action Creators and Get State
 

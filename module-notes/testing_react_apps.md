@@ -79,11 +79,16 @@ describe('<NavigationItems />', () => {
 
 ### Running the Tests
 
-Simply run `npm run test`. It will automatically scan for all test files. 
+- Use `npm test` to automatically scan for all test files, and run those that have changed. 
+- Use `npm test a` to run all tests.
+
+For the application `react-testing`, all five tests should pass.
+
+#### Potential Errors When Running Tests
 
 If you get an error try deleting the `App.test.js` file and then run again. 
 
-For the application `react-testing`, all three tests should pass.
+If there is a silly message saying `No tests found related to files changed since last commit.` , then you can get past this by forcing them all to run by using `npm test a`. 
 
 ### Reference Point for BB Tests
 
